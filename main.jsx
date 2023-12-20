@@ -1,8 +1,8 @@
 import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react'
+import Providers from './src/Providers'
 import App from './src/App'
 import './style.css'
-import { StrictMode } from 'react'
-import Providers from './src/context/Providers'
 
 const root = createRoot(document.getElementById('app'))
 root.render(

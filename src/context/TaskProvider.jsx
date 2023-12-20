@@ -1,3 +1,5 @@
+import { createContext, useContext, useEffect, useState } from 'react'
+import { useAuth } from './AuthProvider'
 import {
   addDoc,
   collection,
@@ -9,9 +11,8 @@ import {
   updateDoc,
   where
 } from 'firebase/firestore'
-import { createContext, useContext, useEffect, useState } from 'react'
 import { db } from '../firebase/firebaseConfig'
-import { useAuth } from './AuthProvider'
+import { toast } from 'sonner'
 
 const TaskContext = createContext()
 
@@ -26,19 +27,22 @@ export function useTask() {
 }
 
 export default function TaskProvider({ children }) {
-  const [task, setTask] = useState({
+  const initialState = {
     title: '',
-    description: ''
-  })
+    done: false
+  }
+  const [tab, setTab] = useState('notes')
+
+  const [task, setTask] = useState(initialState)
+  const [updateTask, setUpdateTask] = useState(initialState)
 
   const [tasks, setTasks] = useState([])
   const [editTask, setEditTask] = useState({})
+
   const [status, setStatus] = useState('idle')
-
   const { user } = useAuth()
-  const displayName = user?.displayName
 
-  // Obtenemos la lista de tareas de la firestore
+  // Obtener la lista de tareas de la firebase
   useEffect(() => {
     try {
       if (user !== null) {
@@ -50,8 +54,8 @@ export default function TaskProvider({ children }) {
         )
         const unsub = onSnapshot(q, (querySnapshot) => {
           setTasks(
-            querySnapshot.docs.map((tasks) => {
-              return { ...tasks.data(), id: tasks.id }
+            querySnapshot.docs.map((item) => {
+              return { ...item.data(), id: item.id }
             })
           )
           setStatus('succesfull')
@@ -67,9 +71,9 @@ export default function TaskProvider({ children }) {
   useEffect(() => {
     if (Object.keys(editTask).length > 0) {
       if (user.uid === editTask.uid) {
-        setTask({
+        setUpdateTask({
           title: editTask.title,
-          description: editTask.description
+          done: editTask.done
         })
       }
     }
@@ -78,71 +82,99 @@ export default function TaskProvider({ children }) {
   function handleChange(e) {
     setTask({ ...task, [e.target.name]: e.target.value })
   }
+  function handleChangeTask(e) {
+    setUpdateTask({ ...updateTask, [e.target.name]: e.target.value })
+  }
+  function handleEditTask(task) {
+    setEditTask(task)
+  }
 
-  // Añadiendo tarea y/o actualizandola en firebase
+  // Añadiendo tarea a la firebase
   async function handleSetTask({ task }) {
     try {
-      if (editTask.id) {
+      await addDoc(collection(db, 'tasks'), {
+        title: task.title,
+        done: task.done,
+        date_created: Date.now(),
+        uid: user.uid
+      })
+      toast.success('tarea agregada')
+    } catch (error) {
+      toast.error('Ha ocurrido un error')
+    }
+  }
+
+  // Actualizar/editar tarea
+  async function handleUpdateNote() {
+    try {
+      if ([updateTask.title].includes('')) {
+        toast.error('La tarea requiere un nombre')
+      } else {
         const q = doc(db, 'tasks', editTask.id)
         await updateDoc(q, {
-          title: task.title,
-          description: task.description
+          title: updateTask.title,
+          done: updateTask.done
         })
         setEditTask({})
-        setTask({
-          title: '',
-          description: ''
-        })
-      } else {
-        await addDoc(collection(db, 'tasks'), {
-          title: task.title,
-          description: task.description,
-          date_created: Date.now(),
-          uid: user.uid
-        })
+        setUpdateTask(initialState)
+        toast.success('Cambios guardados')
       }
     } catch (error) {
-      console.error(error)
+      toast.error('Ha ocurrido un error')
+    }
+  }
+
+  // Establecer una tarea como terminada
+  async function handleCheckTask(task) {
+    try {
+      const q = doc(db, 'tasks', task.id)
+      await updateDoc(q, {
+        done: !task.done
+      })
+    } catch (error) {
+      toast.error('Ha ocurrido un error')
     }
   }
 
   // Eliminamos la tarea
-  async function deleteTask(id) {
+  async function handleDeleteNote(id) {
     try {
-      const taskRef = doc(db, 'tasks', id)
-      await deleteDoc(taskRef)
+      const noteRef = doc(db, 'tasks', id)
+      await deleteDoc(noteRef)
+      toast.success('Tarea eliminada')
     } catch (error) {
-      console.log(error)
+      toast.error('Ha ocurrido un error al eliminar la tarea')
     }
   }
 
   // Enviamos el formulario
   function handleSubmit(e) {
     e.preventDefault()
-    if ([task.title, task.title].includes('')) {
-      console.log('Todos los cambos son requeridos')
+    if ([task.title].includes('')) {
+      toast.error('La tarea requiere un nombre')
     } else {
       handleSetTask({ task })
-      setTask({
-        title: '',
-        description: ''
-      })
+      setTask(initialState)
     }
   }
 
   return (
     <TaskContext.Provider
       value={{
+        tab,
         task,
         tasks,
+        updateTask,
         editTask,
-        displayName,
         status,
-        handleChange,
-        handleSetTask,
-        deleteTask,
         handleSubmit,
-        setEditTask
+        handleUpdateNote,
+        handleDeleteNote,
+        handleCheckTask,
+        handleChange,
+        handleChangeTask,
+        handleEditTask,
+        setTab
       }}
     >
       {children}

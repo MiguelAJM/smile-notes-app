@@ -1,31 +1,34 @@
 import { Link } from 'react-router-dom'
 import useRegister from '../../hooks/useRegister'
+import { Button, Input } from '@nextui-org/react'
 
 export default function RegisterPage() {
   const { user, handleSubmit, handleChange, handleSignGoogle } = useRegister()
 
   return (
-    <div>
-      <button onClick={handleSignGoogle}>Acceder con google</button>
+    <div className='flex flex-col gap-4 w-[350px]'>
+      <Button color='success' onPress={handleSignGoogle}>
+        Acceder con google
+      </Button>
       <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
-        <input
-          type='text'
+        <Input
+          type='email'
           name='email'
           value={user.title}
           onChange={handleChange}
-          placeholder='Correo'
+          label='Correo'
         />
-        <input
+        <Input
           type='password'
           name='password'
           value={user.password}
           onChange={handleChange}
-          placeholder='Contraseña'
+          label='Contraseña'
         />
-        <button>Registrarse</button>
+        <Button color='secondary' type='submit'>Registrarse</Button>
       </form>
 
-      <Link to='/Login'>Iniciar sesion</Link>
+      <Link to='/login'>Iniciar sesion</Link>
     </div>
   )
 }

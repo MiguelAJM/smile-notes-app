@@ -1,38 +1,21 @@
-import { signOut } from 'firebase/auth'
+import { Button, Spinner } from '@nextui-org/react'
+import { useAuth } from '../context/AuthProvider'
+import { useNote } from '../context/NoteProvider'
+import Tasks from '../components/Tasks'
+import Notes from '../components/Notes'
 import { useTask } from '../context/TaskProvider'
-import { formattedDate } from '../helpers/formattedDate'
-import { auth } from '../firebase/firebaseConfig'
-import { toast } from 'sonner'
-import { useNavigate } from 'react-router-dom'
 
 export default function Home() {
-  const {
-    tasks,
-    editTask,
-    task,
-    displayName,
-    status,
-    handleChange,
-    deleteTask,
-    handleSubmit,
-    setEditTask
-  } = useTask()
+  const { status } = useNote()
+  const { tab, setTab } = useTask()
+  const { user, handleSignOut } = useAuth()
 
-  const navigate = useNavigate()
-
-  async function handleSignOut() {
-    try {
-      await signOut(auth)
-      toast.success('Sesión cerrada exitosamente. !Vuelva pronto!')
-      navigate('/login')
-    } catch (error) {
-      toast.error('Ha ocurrido un error inesperado, inténtalo más tarde.')
-    }
-  }
+  const displayName = user?.displayName
 
   if (status === 'pending' || status === 'idle') {
     return (
       <div>
+        <Spinner size='lg' />
         <h2>Cargando...</h2>
       </div>
     )
@@ -43,48 +26,26 @@ export default function Home() {
       <button onClick={handleSignOut} className='text-5xl underline mb-8'>
         Cerrar sesion
       </button>
-      <h1 className='text-3xl underline'>Tareas</h1>
-      <h2 className='my-8 text-4xl'>{displayName}</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          value={task.title}
-          onChange={handleChange}
-          name='title'
-        />
-        <input
-          type='text'
-          value={task.description}
-          onChange={handleChange}
-          name='description'
-        />
-        <button>{Object.keys(editTask).length > 0 ? 'Editar' : 'Crear'}</button>
-      </form>
 
-      <ul>
-        {tasks.map((tasks) => {
-          return (
-            <li className='my-8' key={tasks.id}>
-              <p>Titulo: {tasks.title}</p>
-              <p>Desc: {tasks.description}</p>
-              <p>ID: {tasks.id}</p>
-              <p>Fecha: {formattedDate(tasks.date_created)}</p>
-              <button
-                onClick={() => deleteTask(tasks.id)}
-                className='text-red-500'
-              >
-                Eliminar
-              </button>
-              <button
-                onClick={() => setEditTask(tasks)}
-                className='text-lime-500'
-              >
-                Editar
-              </button>
-            </li>
-          )
-        })}
-      </ul>
+      <h2 className='text-2xl underline mb-8'>Hola {displayName}</h2>
+
+      <div className='flex gap-4'>
+        <Button
+          onPress={() => setTab('notes')}
+          color={tab === 'notes' ? 'primary' : 'default'}
+          className='mb-8'
+        >
+          Notas
+        </Button>
+        <Button
+          onPress={() => setTab('tasks')}
+          color={tab === 'tasks' ? 'primary' : 'default'}
+          className='mb-8'
+        >
+          Tareas
+        </Button>
+      </div>
+      {tab === 'notes' ? <Notes /> : <Tasks />}
     </div>
   )
 }
