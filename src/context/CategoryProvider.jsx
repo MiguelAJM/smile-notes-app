@@ -76,6 +76,11 @@ export default function CategoryProvider({ children }) {
     }
   }, [editCategory])
 
+  // <----------------------------->
+  // Funciones generales
+  // <----------------------------->
+
+  // Cambiar el estado
   function handleChange(e) {
     switch (e.target.name) {
       case 'nameCategory':
@@ -86,14 +91,20 @@ export default function CategoryProvider({ children }) {
     }
   }
 
+  // Activar el modo edicion
   function handleEdit(item) {
     setEditCategory(item)
   }
 
+  // Limpiar el estado
   function handleClear() {
     setCategoryName('')
     setEditCategory('')
   }
+
+  // <----------------------------->
+  // CRUD DE CATEGORIAS
+  // <----------------------------->
 
   // Crear categoria
   async function handleAddCategory() {
