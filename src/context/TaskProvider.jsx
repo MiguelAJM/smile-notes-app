@@ -39,7 +39,7 @@ export default function TaskProvider({ children }) {
   // Cargar los datos de la firebase
   useEffect(() => {
     try {
-      if (user.uid !== null) {
+      if (user !== null) {
         setStatus('pending')
         const q = query(
           collection(db, 'tasks'),
@@ -71,7 +71,11 @@ export default function TaskProvider({ children }) {
     }
   }, [editTask])
 
-  // Cambiuar el estado
+  // <----------------------------->
+  // FUNCIONES VARIAS
+  // <----------------------------->
+
+  // Cambiar el estado
   function handleChange(e) {
     switch (e.target.name) {
       case 'taskName':
@@ -84,6 +88,27 @@ export default function TaskProvider({ children }) {
         break
     }
   }
+
+  // Salir del modo de edicion
+  function handleCancelEdit() {
+    setNewTaskName('')
+    setEditTask({})
+  }
+
+  // Activar el modo edicion
+  function handleEdit(item) {
+    setEditTask(item)
+  }
+
+  // Limpiar el estado
+  function clearState() {
+    setNewTaskName('')
+    setEditTask({})
+  }
+
+  // <----------------------------->
+  // CRUD DE TAREAS
+  // <----------------------------->
 
   // Crear tarea
   async function handleAddTask(categoryName) {
@@ -102,7 +127,7 @@ export default function TaskProvider({ children }) {
   }
 
   // Editar tarea
-  async function handleEditTask(item) {
+  async function handleSaveTask(item) {
     if (newTaskName === '') {
       return toast.error('Titulo requerido')
     }
@@ -130,11 +155,6 @@ export default function TaskProvider({ children }) {
     }
   }
 
-  // Activar el modo edicion
-  function handleEdit(item) {
-    setEditTask(item)
-  }
-
   // Establecer tarea completada
   async function handleCheckTask(item) {
     try {
@@ -145,12 +165,6 @@ export default function TaskProvider({ children }) {
     } catch (error) {
       toast.error('Ha ocurrido un error')
     }
-  }
-
-  // Limpiar el estado
-  function clearState() {
-    setNewTaskName('')
-    setEditTask({})
   }
 
   // Enviar el formulario
@@ -174,10 +188,11 @@ export default function TaskProvider({ children }) {
         handleCheckTask,
         handleChange,
         handleAddTask,
-        handleEditTask,
+        handleSaveTask,
         handleDeleteTask,
         handleSubmitTask,
-        handleEdit
+        handleEdit,
+        handleCancelEdit
       }}
     >
       {children}

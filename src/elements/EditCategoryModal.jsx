@@ -1,7 +1,6 @@
 import {
   Button,
   Divider,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -9,37 +8,23 @@ import {
   ModalHeader
 } from '@nextui-org/react'
 import { useModal } from '../context/ModalProvider'
-import { useCategory } from '../context/CategoryProvider'
+import { Input } from 'postcss'
 
-export default function CategoryModal() {
-  const { modal, activeCategoryModal } = useModal()
-  const { categoryName, editCategory, handleChange, EDIT_CATEGORY, handleCategorySubmit, hnadleEditCategory } =
-    useCategory()
+export default function EditCategoryModal() {
+  const { modal, activeTaskModal } = useModal()
 
   return (
     <Modal
       className='dark text-foreground bg-background'
       isOpen={modal.category}
-      onOpenChange={activeCategoryModal}
+      onOpenChange={activeTaskModal}
     >
       <ModalContent>
         {(onClose) => (
           <>
-            <form
-              onSubmit={
-                EDIT_CATEGORY
-                  ? (e) => {
-                      e.preventDefault()
-                      hnadleEditCategory(editCategory)
-                    }
-                  : (e) => {
-                      e.preventDefault()
-                      handleCategorySubmit()
-                    }
-              }
-            >
+            <form onSubmit={handleCategorySubmit}>
               <ModalHeader className='flex flex-col gap-1'>
-                {EDIT_CATEGORY ? 'Editar Categoria' : 'Crear Categoria'}
+                Crear Categoria
               </ModalHeader>
               <Divider />
               <ModalBody>
@@ -63,7 +48,7 @@ export default function CategoryModal() {
                   className='bg-purple-600'
                   onPress={onClose}
                 >
-                  {EDIT_CATEGORY ? 'Guardar' : 'Crear'}
+                  Crear
                 </Button>
               </ModalFooter>
             </form>

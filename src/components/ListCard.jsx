@@ -1,4 +1,4 @@
-import TaskCard from '../components/TaskCard'
+import TaskCard from '../elements/TaskCard'
 import { useParams } from 'react-router-dom'
 import { useTask } from '../context/TaskProvider'
 import { Progress } from '@nextui-org/react'
@@ -13,8 +13,6 @@ export default function ListCard() {
   // Obtener las tareas por categoria
   const NEW_TASKS = tasks.filter((item) => item.categoryId === CATEGORY)
 
-  // const status = 'pending'
-
   if (status === 'pending' || status === 'idle') {
     return (
       <Progress
@@ -26,7 +24,12 @@ export default function ListCard() {
   }
 
   return (
-    <ul className='grid gap-2'>
+    <ul className='relative grid gap-2'>
+      {NEW_TASKS.length === 0 && (
+        <article className='text-center mt-20 text-5xl text-white/50'>
+          No hay tareas disponibles.
+        </article>
+      )}
       {NEW_TASKS.map((item) => (
         <li key={item.id}>
           <TaskCard item={item} />

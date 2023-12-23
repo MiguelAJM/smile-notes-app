@@ -144,30 +144,6 @@ export default function Tasks() {
     }
   }
 
-  // Eliminar categorias y tareas
-  async function handleDeleteCategory(categoryId, categoryName) {
-    try {
-      const categoryRef = doc(db, 'categories', categoryId)
-      const tasksQuery = query(collection(db, 'tasks'))
-      const tasks = await getDocs(tasksQuery)
-
-      const batch = writeBatch(db)
-
-      batch.delete(categoryRef)
-
-      tasks.forEach((task) => {
-        if (task.data().category === categoryName) {
-          batch.delete(doc(db, 'tasks', task.id))
-        }
-      })
-
-      await batch.commit()
-      toast.success('Categoria eliminada')
-    } catch (error) {
-      toast.error('Ha ocurrido un error')
-    }
-  }
-
   // Obtener tareas por categorias
   const NEW_TASKS = categories.reduce((acc, tasksItem) => {
     const CURRENT_TASK = tasks.filter(
