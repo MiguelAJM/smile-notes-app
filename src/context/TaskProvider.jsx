@@ -19,162 +19,165 @@ const TaskContext = createContext()
 export function useTask() {
   const CONTEXT = useContext(TaskContext)
   if (!CONTEXT) {
-    throw new Error(
-      'You need to wrap the application in the provider: TaskProvider'
-    )
+    throw new Error('You need to wrap the application in the provider')
   }
   return CONTEXT
 }
 
 export default function TaskProvider({ children }) {
-  const initialState = {
-    title: '',
-    done: false
-  }
-  const [tab, setTab] = useState('notes')
-
-  const [task, setTask] = useState(initialState)
-  const [updateTask, setUpdateTask] = useState(initialState)
-
-  const [tasks, setTasks] = useState([])
-  const [editTask, setEditTask] = useState({})
-
-  const [status, setStatus] = useState('idle')
   const { user } = useAuth()
 
-  // Obtener la lista de tareas de la firebase
+  const [taskName, setTaskName] = useState('')
+  const [tasks, setTasks] = useState([])
+
+  const [newTaskName, setNewTaskName] = useState('')
+  const [editTask, setEditTask] = useState({})
+  const [status, setStatus] = useState('')
+
+  const EDIT_MODE = Object.keys(editTask).length > 0
+
+  // Cargar los datos de la firebase
   useEffect(() => {
     try {
-      if (user !== null) {
+      if (user.uid !== null) {
         setStatus('pending')
         const q = query(
           collection(db, 'tasks'),
           where('uid', '==', user.uid),
           orderBy('date_created', 'desc')
         )
-        const unsub = onSnapshot(q, (querySnapshot) => {
+
+        const onSub = onSnapshot(q, (querySnapshot) => {
           setTasks(
             querySnapshot.docs.map((item) => {
               return { ...item.data(), id: item.id }
             })
           )
-          setStatus('succesfull')
+          setStatus('successfull')
         })
-        return unsub
+
+        return onSub
       }
     } catch (error) {
+      toast.error('Ha ocurrido un error')
       setStatus('rejected')
     }
   }, [user])
 
-  // Llenamos los inputs en caso de estar en el modo edicion
+  // Rellenar los inputs en el modo edicion
   useEffect(() => {
-    if (Object.keys(editTask).length > 0) {
-      if (user.uid === editTask.uid) {
-        setUpdateTask({
-          title: editTask.title,
-          done: editTask.done
-        })
-      }
+    if (EDIT_MODE) {
+      setNewTaskName(editTask.title)
     }
   }, [editTask])
 
+  // Cambiuar el estado
   function handleChange(e) {
-    setTask({ ...task, [e.target.name]: e.target.value })
-  }
-  function handleChangeTask(e) {
-    setUpdateTask({ ...updateTask, [e.target.name]: e.target.value })
-  }
-  function handleEditTask(task) {
-    setEditTask(task)
+    switch (e.target.name) {
+      case 'taskName':
+        setTaskName(e.target.value)
+        break
+      case 'editTask':
+        setNewTaskName(e.target.value)
+        break
+      default:
+        break
+    }
   }
 
-  // Añadiendo tarea a la firebase
-  async function handleSetTask({ task }) {
+  // Crear tarea
+  async function handleAddTask(categoryName) {
     try {
       await addDoc(collection(db, 'tasks'), {
-        title: task.title,
-        done: task.done,
+        title: taskName,
+        categoryId: categoryName,
+        completed: false,
         date_created: Date.now(),
         uid: user.uid
       })
-      toast.success('tarea agregada')
+      toast.success('Tarea agregada')
     } catch (error) {
       toast.error('Ha ocurrido un error')
     }
   }
 
-  // Actualizar/editar tarea
-  async function handleUpdateNote() {
-    try {
-      if ([updateTask.title].includes('')) {
-        toast.error('La tarea requiere un nombre')
-      } else {
-        const q = doc(db, 'tasks', editTask.id)
-        await updateDoc(q, {
-          title: updateTask.title,
-          done: updateTask.done
-        })
-        setEditTask({})
-        setUpdateTask(initialState)
-        toast.success('Cambios guardados')
-      }
-    } catch (error) {
-      toast.error('Ha ocurrido un error')
+  // Editar tarea
+  async function handleEditTask(item) {
+    if (newTaskName === '') {
+      return toast.error('Titulo requerido')
     }
-  }
-
-  // Establecer una tarea como terminada
-  async function handleCheckTask(task) {
     try {
-      const q = doc(db, 'tasks', task.id)
+      clearState()
+      const q = doc(db, 'tasks', item.id)
       await updateDoc(q, {
-        done: !task.done
+        title: newTaskName
+      })
+      toast.success('Cambios guardados')
+    } catch (error) {
+      toast.error('Ha ocurrido un error')
+    }
+  }
+
+  // Eliminar tarea
+  async function handleDeleteTask(item) {
+    try {
+      clearState()
+      const taskRef = doc(db, 'tasks', item.id)
+      await deleteDoc(taskRef)
+      toast.success('Tarea eliminada')
+    } catch (error) {
+      toast.error('Ha ocurrido un error')
+    }
+  }
+
+  // Activar el modo edicion
+  function handleEdit(item) {
+    setEditTask(item)
+  }
+
+  // Establecer tarea completada
+  async function handleCheckTask(item) {
+    try {
+      const q = doc(db, 'tasks', item.id)
+      await updateDoc(q, {
+        completed: !item.completed
       })
     } catch (error) {
       toast.error('Ha ocurrido un error')
     }
   }
 
-  // Eliminamos la tarea
-  async function handleDeleteNote(id) {
-    try {
-      const noteRef = doc(db, 'tasks', id)
-      await deleteDoc(noteRef)
-      toast.success('Tarea eliminada')
-    } catch (error) {
-      toast.error('Ha ocurrido un error al eliminar la tarea')
-    }
+  // Limpiar el estado
+  function clearState() {
+    setNewTaskName('')
+    setEditTask({})
   }
 
-  // Enviamos el formulario
-  function handleSubmit(e) {
-    e.preventDefault()
-    if ([task.title].includes('')) {
-      toast.error('La tarea requiere un nombre')
-    } else {
-      handleSetTask({ task })
-      setTask(initialState)
+  // Enviar el formulario
+  async function handleSubmitTask(categoryName) {
+    if (taskName === '') {
+      return toast.error('Titulo requerido')
     }
+    handleAddTask(categoryName)
+    setTaskName('')
   }
 
   return (
     <TaskContext.Provider
       value={{
-        tab,
-        task,
         tasks,
-        updateTask,
+        taskName,
+        newTaskName,
         editTask,
+        EDIT_MODE,
         status,
-        handleSubmit,
-        handleUpdateNote,
-        handleDeleteNote,
         handleCheckTask,
         handleChange,
-        handleChangeTask,
+        handleAddTask,
         handleEditTask,
-        setTab
+        handleDeleteTask,
+        handleSubmitTask,
+        handleEdit
       }}
     >
       {children}

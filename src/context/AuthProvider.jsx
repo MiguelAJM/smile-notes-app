@@ -22,6 +22,8 @@ export default function AuthProvider({ children }) {
 
   const navigate = useNavigate()
 
+  const { displayName, email, photoURL } = user ?? ''
+
   async function handleSignOut() {
     try {
       await signOut(auth)
@@ -42,7 +44,9 @@ export default function AuthProvider({ children }) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loading, handleSignOut }}>
+    <AuthContext.Provider
+      value={{ displayName, email, photoURL, user, loading, handleSignOut }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   )

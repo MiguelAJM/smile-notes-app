@@ -24,6 +24,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'space-before-function-paren': 'off',
     'multiline-ternary': 'off',
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
+    'react/jsx-no-duplicate-props': 'off'
   }
 }

@@ -1,18 +1,21 @@
 import { BrowserRouter } from 'react-router-dom'
 import { NextUIProvider } from '@nextui-org/react'
 import AuthProvider from './context/AuthProvider'
-import NoteProvider from './context/NoteProvider'
+import CategoryProvider from './context/CategoryProvider'
 import TaskProvider from './context/TaskProvider'
+import ModalProvider from './context/ModalProvider'
 
 export default function Providers({ children }) {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <NoteProvider>
+        <CategoryProvider>
           <TaskProvider>
-            <NextUIProvider>{children}</NextUIProvider>
+            <ModalProvider>
+              <NextUIProvider>{children}</NextUIProvider>
+            </ModalProvider>
           </TaskProvider>
-        </NoteProvider>
+        </CategoryProvider>
       </AuthProvider>
     </BrowserRouter>
   )
