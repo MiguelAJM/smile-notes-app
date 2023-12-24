@@ -10,8 +10,9 @@ import { useCategory } from '../context/CategoryProvider'
 import { useModal } from '../context/ModalProvider'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthProvider'
-import { IconHome, IconLogout } from '@tabler/icons-react'
+import { IconHome, IconLogout, IconPlus } from '@tabler/icons-react'
 import ListCategories from './ListCategories'
+import { bgPrimary } from '../themes'
 
 export default function Aside() {
   const { handleClear } = useCategory()
@@ -30,9 +31,10 @@ export default function Aside() {
           }}
           size='lg'
           radius='full'
-          className='absolute top-0 left-0 right-0 bg-purple-600'
+          startContent={<IconPlus />}
+          className={`${bgPrimary} absolute top-0 left-0 right-0`}
         >
-          + Nueva categoria
+          Nueva categoria
         </Button>
 
         <ListCategories />

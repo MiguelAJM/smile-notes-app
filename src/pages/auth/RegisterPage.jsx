@@ -1,90 +1,81 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Divider,
-  Input
-} from '@nextui-org/react'
+import { Button, Card, Input } from '@nextui-org/react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import {
-  IconBrandGoogleFilled,
-  IconLock,
-  IconMailFilled
-} from '@tabler/icons-react'
+import { IconBrandGoogleFilled } from '@tabler/icons-react'
+import { bgSecondary, textSecondary } from '../../themes'
 import useRegister from '../../hooks/useRegister'
 
 export default function RegisterPage() {
   const { user, handleSubmit, handleChange, handleSignGoogle } = useRegister()
 
   return (
-    <section className='w-full md:min-w-[675px]'>
-      <motion.section
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{
-          duration: 0.3,
-          ease: 'easeInOut'
-        }}
-        className='w-full min-h-screen flex items-center justify-center p-2 xs:p-4 md:p-8'
-      >
-        <article className='max-w-[675px] w-full'>
-          <Card className='bg-blue-chill-950 border-1 border-blue-chill-600 md:p-4'>
-            <CardHeader className='flex flex-col gap-5'>
-              <h2 className='text-3xl font-bold'>Crear cuenta</h2>
-              <Button
-                fullWidth
-                startContent={<IconBrandGoogleFilled />}
-                className='bg-blue-chill-400 text-blue-chill-950 transition-all ease-in-out duration-300 hover:bg-blue-chill-300'
-                onPress={handleSignGoogle}
+    <section className='flex min-w-screen min-h-screen'>
+      <Card className='max-w-[480px] md:max-w-[540px] mx-auto md:mx-0 w-full flex flex-col gap-8 justify-center items-center p-8 z-[10]'>
+        <div className='w-full'>
+          <div className='flex flex-col'>
+            <strong className='text-3xl uppercase font-light mb-5'>
+              Crear cuenta
+            </strong>
+            <Button
+              onClick={handleSignGoogle}
+              className={`${bgSecondary} relative mt-6 rounded-full py-3 text-sm hover:shadow-lg`}
+            >
+              <span className='text-xl text-white'>Acceder con Google</span>
+              <span className='absolute left-2 top-0 flex items-center justify-center h-full w-10 text-white'>
+                <IconBrandGoogleFilled />
+              </span>
+            </Button>
+          </div>
+          <div className='relative mt-10 h-px bg-gray-300'>
+            <div className='absolute left-0 top-0 flex justify-center w-full -mt-2'>
+              <span className='bg-[#181818] px-4 text-xs text-gray-500 uppercase'>
+                Con correo
+              </span>
+            </div>
+          </div>
+          <form onSubmit={handleSubmit} className='mt-10 flex flex-col'>
+            <Input
+              className='p-3 text-dark rounded-full mb-5 outline-2 outline-secondary/75'
+              type='text'
+              name='email'
+              id='email'
+              value={user.email}
+              onChange={handleChange}
+              variant='underlined'
+              placeholder='Correo electronico'
+            />
+            <Input
+              className='p-3 text-dark rounded-full mb-5 outline-2 outline-secondary/75'
+              type='password'
+              name='pass'
+              id='pass'
+              value={user.password}
+              onChange={handleChange}
+              variant='underlined'
+              placeholder='Contraseña'
+            />
+
+            <Button
+              type='submit'
+              className={`${bgSecondary} relative mt-6 rounded-full py-3 text-sm text-gray-800 hover:shadow-lg'`}
+            >
+              <span className='text-xl text-white'>Crear cuenta</span>
+            </Button>
+
+            <span className='mt-8 px-4 text-center text-md'>
+              ¿Ya tienes una cuenta?{' '}
+              <Link
+                className={`${textSecondary} font-semibold hover:underline'`}
+                to={'/login'}
               >
-                Acceder con google
-              </Button>
-            </CardHeader>
-            <Divider />
-            <CardBody>
-              <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
-                <Input
-                  label='Correo'
-                  placeholder='Introduce un correo'
-                  name='email'
-                  type='email'
-                  startContent={<IconMailFilled />}
-                  value={user.email}
-                  onChange={handleChange}
-                />
-                <Input
-                  label='Contraseña'
-                  placeholder='Introduce tu contraseña'
-                  name='password'
-                  type='password'
-                  startContent={<IconLock />}
-                  value={user.password}
-                  onChange={handleChange}
-                />
-                <Divider />
-                <Button
-                  type='submit'
-                  className='bg-blue-chill-400 text-blue-chill-950 transition-all ease-in-out duration-300 hover:bg-blue-chill-300'
-                >
-                  Crear cuenta
-                </Button>
-              </form>
-            </CardBody>
-            <CardFooter>
-              <p className='text-sm text-center mx-auto'>
-                ¿Ya tienes cuenta?{' '}
-                <Link className='text-blue-chill-400 underline' to='/login'>
-                  Inicia sesión
-                </Link>
-              </p>
-            </CardFooter>
-          </Card>
-        </article>
-      </motion.section>
+                Inicia sesión
+              </Link>
+            </span>
+          </form>
+        </div>
+      </Card>
+      <div
+        className={`${bgSecondary} absolute top-0 left-0 right-0 bottom-0`}
+      ></div>
     </section>
   )
 }

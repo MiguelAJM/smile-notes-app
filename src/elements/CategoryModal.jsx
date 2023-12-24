@@ -10,6 +10,7 @@ import {
 } from '@nextui-org/react'
 import { useModal } from '../context/ModalProvider'
 import { useCategory } from '../context/CategoryProvider'
+import { bgPrimary } from '../themes'
 
 export default function CategoryModal() {
   const { modal, activeCategoryModal } = useModal()
@@ -60,7 +61,7 @@ export default function CategoryModal() {
                 </Button>
                 <Button
                   type='submit'
-                  className='bg-purple-600'
+                  className={`${bgPrimary}`}
                   onPress={onClose}
                 >
                   {EDIT_CATEGORY ? 'Guardar' : 'Crear'}

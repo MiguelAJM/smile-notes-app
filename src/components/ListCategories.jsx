@@ -1,17 +1,16 @@
-import { Listbox, ListboxItem, Spinner } from '@nextui-org/react'
+import { Listbox, ListboxItem, Skeleton } from '@nextui-org/react'
 import { IconArrowBadgeRightFilled } from '@tabler/icons-react'
 import { useCategory } from '../context/CategoryProvider'
 import { useParams } from 'react-router-dom'
 import CategoryButton from '../elements/CategoryButton'
+import { bgHover, bgPrimary } from '../themes'
 
 export default function ListCategories() {
   const { id } = useParams()
   const { categories, status } = useCategory()
 
-  // const TEST = 'pending'
-
   if (status === 'pending' || status === 'idle') {
-    return <Spinner size='lg' color='secondary' className='my-20' />
+    return <Skeleton className='max-w-full h-11 my-20 rounded-lg' />
   }
 
   return categories.length === 0 ? (
@@ -34,8 +33,8 @@ export default function ListCategories() {
             classNames={{
               base: [
                 'group/edit',
-                'dark:hover:bg-purple-800',
-                `${URL === id ? 'bg-purple-600' : ''}`
+                `dark:hover:${bgHover}`,
+                `${URL === id ? bgPrimary : ''}`
               ]
             }}
             key={item.id}

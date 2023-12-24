@@ -1,7 +1,7 @@
 import TaskCard from '../elements/TaskCard'
 import { useParams } from 'react-router-dom'
 import { useTask } from '../context/TaskProvider'
-import { Spinner } from '@nextui-org/react'
+import { Skeleton } from '@nextui-org/react'
 
 export default function ListCardTasks() {
   const { tasks, status } = useTask()
@@ -16,7 +16,7 @@ export default function ListCardTasks() {
   // const TEST = 'pending'
 
   if (status === 'pending' || status === 'idle') {
-    return <Spinner size='lg' color='default' className='my-16' />
+    return <Skeleton className='max-w-full h-16 mb-20 rounded-lg'/>
   }
 
   return (

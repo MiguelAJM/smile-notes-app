@@ -143,7 +143,6 @@ export default function CategoryProvider({ children }) {
 
       tasks.forEach((task) => {
         if (task.data().categoryId === item.categoryId) {
-          console.log(task.data())
           batch.update(doc(db, 'tasks', task.id), {
             categoryId: categoryID
           })
