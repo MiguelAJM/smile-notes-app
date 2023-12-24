@@ -2,19 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-.theme {
-  background: black;
-  color: white;
-}
-@media (prefers-color-scheme: dark) {
-  .theme.adaptive {
-    background: #753;
-    color: #dcb;
-  }
-}
-
 html {
   scrollbar-gutter: stable;
+}
+
+:root {
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #000000;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::-webkit-scrollbar {

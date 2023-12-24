@@ -67,7 +67,9 @@ export default function TaskProvider({ children }) {
   // Rellenar los inputs en el modo edicion
   useEffect(() => {
     if (EDIT_MODE) {
-      setNewTaskName(editTask.title)
+      if (user.uid === editTask.uid) {
+        setNewTaskName(editTask.title)
+      }
     }
   }, [editTask])
 

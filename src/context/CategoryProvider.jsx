@@ -68,6 +68,7 @@ export default function CategoryProvider({ children }) {
     }
   }, [user])
 
+  // Rellenar los inputs en el modo edicion
   useEffect(() => {
     if (EDIT_CATEGORY) {
       if (user.uid === editCategory.uid) {
@@ -117,6 +118,7 @@ export default function CategoryProvider({ children }) {
         uid: user.uid
       })
       handleClear()
+      navigate(`/task/${categoryID}`)
       toast.success('Categoria creada')
     } catch (error) {
       toast.error('Ha ocurrido un error')
@@ -141,6 +143,7 @@ export default function CategoryProvider({ children }) {
 
       tasks.forEach((task) => {
         if (task.data().categoryId === item.categoryId) {
+          console.log(task.data())
           batch.update(doc(db, 'tasks', task.id), {
             categoryId: categoryID
           })

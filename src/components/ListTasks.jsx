@@ -1,9 +1,9 @@
 import TaskCard from '../elements/TaskCard'
 import { useParams } from 'react-router-dom'
 import { useTask } from '../context/TaskProvider'
-import { Progress } from '@nextui-org/react'
+import { Spinner } from '@nextui-org/react'
 
-export default function ListCard() {
+export default function ListCardTasks() {
   const { tasks, status } = useTask()
 
   // Obtener la categoria por la URL
@@ -13,14 +13,10 @@ export default function ListCard() {
   // Obtener las tareas por categoria
   const NEW_TASKS = tasks.filter((item) => item.categoryId === CATEGORY)
 
+  // const TEST = 'pending'
+
   if (status === 'pending' || status === 'idle') {
-    return (
-      <Progress
-        aria-label='Cargando...'
-        value={100}
-        classNames={{ base: 'max-w-full', indicator: 'bg-[#333333]' }}
-      />
-    )
+    return <Spinner size='lg' color='default' className='my-16' />
   }
 
   return (

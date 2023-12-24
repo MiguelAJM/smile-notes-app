@@ -2,7 +2,7 @@ import Aside from './Aside'
 
 export default function Layaout({ children }) {
   return (
-    <section className='w-full h-screen p-6'>
+    <section className='w-full h-screen p-8'>
       <div className='w-full h-full flex justify-center items-center flex-col gap-8 mx-auto'>
         <div className='flex gap-8 w-full h-full '>
           <Aside />

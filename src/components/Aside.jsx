@@ -4,25 +4,17 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownTrigger,
-  Listbox,
-  ListboxItem
+  DropdownTrigger
 } from '@nextui-org/react'
 import { useCategory } from '../context/CategoryProvider'
 import { useModal } from '../context/ModalProvider'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthProvider'
-import {
-  IconHome,
-  IconLogout,
-  IconArrowBadgeRightFilled
-} from '@tabler/icons-react'
-import CategoryButton from '../elements/CategoryButton'
+import { IconHome, IconLogout } from '@tabler/icons-react'
+import ListCategories from './ListCategories'
 
 export default function Aside() {
-  const { id } = useParams()
-
-  const { categories, handleClear } = useCategory()
+  const { handleClear } = useCategory()
   const { activeCategoryModal } = useModal()
   const { displayName, email, photoURL, handleSignOut } = useAuth()
 
@@ -43,35 +35,9 @@ export default function Aside() {
           + Nueva categoria
         </Button>
 
-        <Listbox
-          aria-label='Categories'
-          className='h-full mt-20 flex flex-col gap-3 overflow-y-auto'
-        >
-          {categories.map((item) => {
-            const { categoryTitle } = item
-            const URL = categoryTitle.split(' ').join('-').toLowerCase()
-            return (
-              <ListboxItem
-                textValue={item.categoryTitle}
-                startContent={<IconArrowBadgeRightFilled />}
-                endContent={<CategoryButton item={item} />}
-                classNames={{
-                  base: [
-                    'group/edit',
-                    'dark:hover:bg-purple-800',
-                    `${URL === id ? 'bg-purple-600' : ''}`
-                  ]
-                }}
-                key={item.id}
-                href={`/task/${URL}`}
-              >
-                <h2 className='text-2xl'>{item.categoryTitle}</h2>
-              </ListboxItem>
-            )
-          })}
-        </Listbox>
+        <ListCategories />
 
-        <div className='bg-background absolute bottom-0 left-0'>
+        <div className='w-full bg-background absolute bottom-0 left-0'>
           <Dropdown>
             <DropdownTrigger>
               <article className='flex items-center gap-3'>

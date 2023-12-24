@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useTask } from '../context/TaskProvider'
 import HeaderTask from '../elements/HeaderTask'
 import Layaout from '../components/Layaout'
-import ListCard from '../components/ListCard'
+import ListTasks from '../components/ListTasks'
 
 export default function Tasks() {
   const { taskName, handleChange, handleSubmitTask } = useTask()
@@ -23,7 +23,7 @@ export default function Tasks() {
       <div className='w-full h-full flex flex-col gap-4 overflow-y-auto mb-20'>
         <HeaderTask />
 
-        <ListCard />
+        <ListTasks />
       </div>
 
       <form
