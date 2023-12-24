@@ -1,25 +1,27 @@
-import { Card, CardBody, Checkbox, Input } from '@nextui-org/react'
+import { Card, CardBody, Checkbox } from '@nextui-org/react'
 import { useTask } from '../context/TaskProvider'
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from '../firebase/firebaseConfig'
+import { toast } from 'sonner'
 import TaskButtons from './TaskButtons'
-import TaskTitle from './TaskTitle'
+import EditTaskInput from './EditTaskInput'
 
 export default function TaskCard({ item }) {
-  const {
-    editTask,
-    newTaskName,
-    handleChange,
-    handleSaveTask,
-    handleCheckTask,
-    handleEdit
-  } = useTask()
+  const { editTask, handleEdit } = useTask()
 
   // Editar el elemento segun el ID
-  const EDIT_TASK_ID = editTask.id === item.id
+  const editingTask = editTask.id === item.id
 
-  // Enviar form de editar
-  const handleSubmitEdit = (e) => {
-    e.preventDefault()
-    handleSaveTask(item)
+  // Establecer tarea completada
+  async function handleCheckTask(item) {
+    try {
+      const q = doc(db, 'tasks', item.id)
+      await updateDoc(q, {
+        completed: !item.completed
+      })
+    } catch (error) {
+      toast.error('Ha ocurrido un error')
+    }
   }
 
   return (
@@ -39,25 +41,12 @@ export default function TaskCard({ item }) {
                 onValueChange={() => handleCheckTask(item)}
               />
             </div>
-            {EDIT_TASK_ID ? (
-              <form className='w-full my-0.5' onSubmit={handleSubmitEdit}>
-                <Input
-                  autoFocus
-                  name='editTask'
-                  placeholder={item.title}
-                  value={newTaskName}
-                  onChange={handleChange}
-                  size='sm'
-                />
-              </form>
-            ) : (
-              <TaskTitle item={item} />
-            )}
+            <EditTaskInput item={item} />
           </article>
           <div
-            className={`flex gap-2 ${
-              EDIT_TASK_ID ? 'opacity-[1]' : 'opacity-0'
-            } transition-all duration-250 ease-in-out group-hover/task:opacity-[1]`}
+            className={`${
+              editingTask ? 'opacity-[1]' : 'opacity-0'
+            } flex gap-2 transition-all duration-250 ease-in-out group-hover/task:opacity-[1]`}
           >
             <TaskButtons item={item} />
           </div>

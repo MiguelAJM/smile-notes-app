@@ -1,19 +1,16 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from './AuthProvider'
 import {
-  addDoc,
   collection,
-  doc,
-  getDocs,
   onSnapshot,
   orderBy,
   query,
-  where,
-  writeBatch
+  where
 } from 'firebase/firestore'
 import { db } from '../firebase/firebaseConfig'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
+import handleAddCategory from '../firebase/categories-services/createCategory'
 
 const CategoryContext = createContext()
 
@@ -32,14 +29,14 @@ export default function CategoryProvider({ children }) {
   const [categories, setCategories] = useState([])
 
   const [editCategory, setEditCategory] = useState({})
-
   const [status, setStatus] = useState('idle')
 
   const navigate = useNavigate()
 
-  const EDIT_CATEGORY = Object.keys(editCategory).length > 0
+  // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
+  const editingCategory = Object.keys(editCategory).length > 0
 
-  // Cargar los datos de la firebase
+  // Cargar las categorias creadas en la firestore
   useEffect(() => {
     try {
       setStatus('pending')
@@ -70,32 +67,18 @@ export default function CategoryProvider({ children }) {
 
   // Rellenar los inputs en el modo edicion
   useEffect(() => {
-    if (EDIT_CATEGORY) {
+    if (editingCategory) {
       if (user.uid === editCategory.uid) {
         setCategoryName(editCategory.categoryTitle)
       }
     }
   }, [editCategory])
 
-  // <----------------------------->
-  // Funciones generales
-  // <----------------------------->
-
   // Cambiar el estado
-  function handleChange(e) {
-    switch (e.target.name) {
-      case 'nameCategory':
-        setCategoryName(e.target.value)
-        break
-      default:
-        break
-    }
-  }
+  const handleChange = (e) => setCategoryName(e.target.value)
 
   // Activar el modo edicion
-  function handleEdit(item) {
-    setEditCategory(item)
-  }
+  const handleEdit = (item) => setEditCategory(item)
 
   // Limpiar el estado
   function handleClear() {
@@ -103,94 +86,14 @@ export default function CategoryProvider({ children }) {
     setEditCategory('')
   }
 
-  // <----------------------------->
-  // CRUD DE CATEGORIAS
-  // <----------------------------->
-
-  // Crear categoria
-  async function handleAddCategory() {
-    const categoryID = categoryName.split(' ').join('-').toLowerCase()
-    try {
-      await addDoc(collection(db, 'categories'), {
-        categoryTitle: categoryName,
-        categoryId: categoryID,
-        date_created: Date.now(),
-        uid: user.uid
-      })
-      handleClear()
-      navigate(`/task/${categoryID}`)
-      toast.success('Categoria creada')
-    } catch (error) {
-      toast.error('Ha ocurrido un error')
-      console.log(error)
-    }
-  }
-
-  // Editar categorias
-  async function hnadleEditCategory(item) {
-    const categoryID = categoryName.split(' ').join('-').toLowerCase()
-    try {
-      const categoryRef = doc(db, 'categories', item.id)
-      const tasksQuery = query(collection(db, 'tasks'))
-      const tasks = await getDocs(tasksQuery)
-
-      const batch = writeBatch(db)
-
-      batch.update(categoryRef, {
-        categoryTitle: categoryName,
-        categoryId: categoryID
-      })
-
-      tasks.forEach((task) => {
-        if (task.data().categoryId === item.categoryId) {
-          batch.update(doc(db, 'tasks', task.id), {
-            categoryId: categoryID
-          })
-        }
-      })
-
-      navigate(`/task/${categoryID}`)
-      batch.commit()
-      handleClear()
-      toast.success('Categoria editada')
-    } catch (error) {
-      toast.error('Ha ocurrido un error')
-    }
-  }
-
-  // Eliminar categorias y tareas
-  async function handleDeleteCategory(item) {
-    handleClear()
-    try {
-      const categoryRef = doc(db, 'categories', item.id)
-      const tasksQuery = query(collection(db, 'tasks'))
-      const tasks = await getDocs(tasksQuery)
-
-      const batch = writeBatch(db)
-
-      batch.delete(categoryRef)
-
-      tasks.forEach((task) => {
-        if (task.data().categoryId === item.categoryId) {
-          batch.delete(doc(db, 'tasks', task.id))
-        }
-      })
-
-      navigate('/')
-      batch.commit()
-      toast.success('Categoria eliminada')
-    } catch (error) {
-      toast.error('Ha ocurrido un error')
-    }
-  }
-
-  // Enviar el formulario
+  // Enviar el formulario con los datos a la firestore
   async function handleCategorySubmit() {
-    setCategoryName('')
     if (categoryName === '') {
       return toast.error('Titulo requerido')
     }
-    handleAddCategory()
+
+    setCategoryName('')
+    handleAddCategory(categoryName, user, handleClear, navigate)
   }
 
   return (
@@ -200,14 +103,12 @@ export default function CategoryProvider({ children }) {
         categoryName,
         editCategory,
         status,
-        EDIT_CATEGORY,
         handleAddCategory,
         handleEdit,
-        hnadleEditCategory,
-        handleDeleteCategory,
         handleChange,
         handleClear,
-        handleCategorySubmit
+        handleCategorySubmit,
+        setCategoryName
       }}
     >
       {children}

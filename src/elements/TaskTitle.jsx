@@ -1,4 +1,3 @@
-import React from 'react'
 import { formattedDate } from '../helpers/formattedDate'
 
 export default function TaskTitle({ item }) {

@@ -1,7 +1,7 @@
 import { bgColor } from '../themes'
 import Aside from './Aside'
 
-export default function Layaout({ children }) {
+export default function Layout({ children }) {
   return (
     <section className='w-full h-screen p-8'>
       <div className='w-full h-full flex justify-center items-center flex-col gap-8 mx-auto'>

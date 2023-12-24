@@ -11,11 +11,45 @@ import {
 import { useModal } from '../context/ModalProvider'
 import { useCategory } from '../context/CategoryProvider'
 import { bgPrimary } from '../themes'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { useAuth } from '../context/AuthProvider'
+import handleAddCategory from '../firebase/categories-services/createCategory'
+import handleEditCategory from '../firebase/categories-services/editCategory'
 
 export default function CategoryModal() {
+  const { user } = useAuth()
   const { modal, activeCategoryModal } = useModal()
-  const { categoryName, editCategory, handleChange, EDIT_CATEGORY, handleCategorySubmit, hnadleEditCategory } =
-    useCategory()
+  const {
+    categoryName,
+    editCategory,
+    handleChange,
+    handleClear,
+    setCategoryName
+  } = useCategory()
+
+  const navigate = useNavigate()
+
+  // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
+  const editingMode = Object.keys(editCategory).length > 0
+
+  // Enviar el formulario con los datos a la firestore
+  async function handleCategorySubmit(e) {
+    e.preventDefault()
+    if (categoryName === '') {
+      return toast.error('Titulo requerido')
+    }
+
+    setCategoryName('')
+    handleAddCategory(categoryName, user, handleClear, navigate)
+  }
+
+  // Si el modo edicion esta activo podemos actualizar, en caso contrario se crea una nueva
+  const editingCategory = editingMode
+    ? () => {
+        handleEditCategory(editCategory, categoryName, handleClear, navigate)
+      }
+    : () => handleCategorySubmit()
 
   return (
     <Modal
@@ -26,21 +60,9 @@ export default function CategoryModal() {
       <ModalContent>
         {(onClose) => (
           <>
-            <form
-              onSubmit={
-                EDIT_CATEGORY
-                  ? (e) => {
-                      e.preventDefault()
-                      hnadleEditCategory(editCategory)
-                    }
-                  : (e) => {
-                      e.preventDefault()
-                      handleCategorySubmit()
-                    }
-              }
-            >
+            <form onSubmit={editingCategory}>
               <ModalHeader className='flex flex-col gap-1'>
-                {EDIT_CATEGORY ? 'Editar Categoria' : 'Crear Categoria'}
+                {editingMode ? 'Editar Categoria' : 'Crear Categoria'}
               </ModalHeader>
               <Divider />
               <ModalBody>
@@ -64,7 +86,7 @@ export default function CategoryModal() {
                   className={`${bgPrimary}`}
                   onPress={onClose}
                 >
-                  {EDIT_CATEGORY ? 'Guardar' : 'Crear'}
+                  {editingMode ? 'Guardar' : 'Crear'}
                 </Button>
               </ModalFooter>
             </form>

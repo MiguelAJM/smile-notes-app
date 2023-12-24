@@ -8,10 +8,14 @@ import {
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { useCategory } from '../context/CategoryProvider'
 import { useModal } from '../context/ModalProvider'
+import { useNavigate } from 'react-router-dom'
+import handleDeleteCategory from '../firebase/categories-services/deleteCategory'
 
 export default function CategoryButton({ item }) {
   const { activeCategoryModal } = useModal()
-  const { handleDeleteCategory, handleEdit } = useCategory()
+  const { handleEdit, handleClear } = useCategory()
+
+  const navigate = useNavigate()
 
   return (
     <Dropdown>
@@ -44,7 +48,7 @@ export default function CategoryButton({ item }) {
           color='danger'
           key='delete-category'
           className='text-danger'
-          onPress={() => handleDeleteCategory(item)}
+          onPress={() => handleDeleteCategory(item, handleClear, navigate)}
         >
           Eliminar categoria
         </DropdownItem>

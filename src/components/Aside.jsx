@@ -19,7 +19,7 @@ export default function Aside() {
   const { activeCategoryModal } = useModal()
   const { displayName, email, photoURL, handleSignOut } = useAuth()
 
-  const naigate = useNavigate()
+  const navigate = useNavigate()
 
   return (
     <aside className='w-1/6 rounded-lg flex flex-col z-10'>
@@ -54,7 +54,7 @@ export default function Aside() {
               <DropdownItem
                 startContent={<IconHome />}
                 key='home'
-                onPress={() => naigate('/')}
+                onPress={() => navigate('/')}
                 className='text-white'
               >
                 Inicio

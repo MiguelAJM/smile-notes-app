@@ -1,14 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from './AuthProvider'
 import {
-  addDoc,
   collection,
-  deleteDoc,
-  doc,
   onSnapshot,
   orderBy,
   query,
-  updateDoc,
   where
 } from 'firebase/firestore'
 import { db } from '../firebase/firebaseConfig'
@@ -34,9 +30,10 @@ export default function TaskProvider({ children }) {
   const [editTask, setEditTask] = useState({})
   const [status, setStatus] = useState('')
 
-  const EDIT_MODE = Object.keys(editTask).length > 0
+  // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
+  const editingTask = Object.keys(editTask).length > 0
 
-  // Cargar los datos de la firebase
+  // Cargar las tareas creadas en la firestore
   useEffect(() => {
     try {
       if (user !== null) {
@@ -66,16 +63,12 @@ export default function TaskProvider({ children }) {
 
   // Rellenar los inputs en el modo edicion
   useEffect(() => {
-    if (EDIT_MODE) {
+    if (editingTask) {
       if (user.uid === editTask.uid) {
         setNewTaskName(editTask.title)
       }
     }
   }, [editTask])
-
-  // <----------------------------->
-  // FUNCIONES VARIAS
-  // <----------------------------->
 
   // Cambiar el estado
   function handleChange(e) {
@@ -91,91 +84,13 @@ export default function TaskProvider({ children }) {
     }
   }
 
-  // Salir del modo de edicion
-  function handleCancelEdit() {
-    setNewTaskName('')
-    setEditTask({})
-  }
-
   // Activar el modo edicion
-  function handleEdit(item) {
-    setEditTask(item)
-  }
+  const handleEdit = (item) => setEditTask(item)
 
   // Limpiar el estado
-  function clearState() {
+  function handleClear() {
     setNewTaskName('')
     setEditTask({})
-  }
-
-  // <----------------------------->
-  // CRUD DE TAREAS
-  // <----------------------------->
-
-  // Crear tarea
-  async function handleAddTask(categoryName) {
-    try {
-      await addDoc(collection(db, 'tasks'), {
-        title: taskName,
-        categoryId: categoryName,
-        completed: false,
-        date_created: Date.now(),
-        uid: user.uid
-      })
-      toast.success('Tarea agregada')
-    } catch (error) {
-      toast.error('Ha ocurrido un error')
-    }
-  }
-
-  // Editar tarea
-  async function handleSaveTask(item) {
-    if (newTaskName === '') {
-      return toast.error('Titulo requerido')
-    }
-    try {
-      clearState()
-      const q = doc(db, 'tasks', item.id)
-      await updateDoc(q, {
-        title: newTaskName
-      })
-      toast.success('Cambios guardados')
-    } catch (error) {
-      toast.error('Ha ocurrido un error')
-    }
-  }
-
-  // Eliminar tarea
-  async function handleDeleteTask(item) {
-    try {
-      clearState()
-      const taskRef = doc(db, 'tasks', item.id)
-      await deleteDoc(taskRef)
-      toast.success('Tarea eliminada')
-    } catch (error) {
-      toast.error('Ha ocurrido un error')
-    }
-  }
-
-  // Establecer tarea completada
-  async function handleCheckTask(item) {
-    try {
-      const q = doc(db, 'tasks', item.id)
-      await updateDoc(q, {
-        completed: !item.completed
-      })
-    } catch (error) {
-      toast.error('Ha ocurrido un error')
-    }
-  }
-
-  // Enviar el formulario
-  async function handleSubmitTask(categoryName) {
-    if (taskName === '') {
-      return toast.error('Titulo requerido')
-    }
-    handleAddTask(categoryName)
-    setTaskName('')
   }
 
   return (
@@ -185,16 +100,12 @@ export default function TaskProvider({ children }) {
         taskName,
         newTaskName,
         editTask,
-        EDIT_MODE,
+        editingTask,
         status,
-        handleCheckTask,
         handleChange,
-        handleAddTask,
-        handleSaveTask,
-        handleDeleteTask,
-        handleSubmitTask,
         handleEdit,
-        handleCancelEdit
+        setTaskName,
+        handleClear
       }}
     >
       {children}

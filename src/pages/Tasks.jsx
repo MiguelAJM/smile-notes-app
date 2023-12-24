@@ -1,25 +1,32 @@
 import { Input } from '@nextui-org/react'
 import { useParams } from 'react-router-dom'
 import { useTask } from '../context/TaskProvider'
+import { toast } from 'sonner'
+import { useAuth } from '../context/AuthProvider'
 import HeaderTask from '../elements/HeaderTask'
-import Layaout from '../components/Layaout'
+import Layout from '../components/Layout'
 import ListTasks from '../components/ListTasks'
+import handleAddTask from '../firebase/tasks-services/createTask'
 
 export default function Tasks() {
-  const { taskName, handleChange, handleSubmitTask } = useTask()
+  const { taskName, handleChange, setTaskName } = useTask()
+  const { user } = useAuth()
 
   // Obtener la categoria por la URL
-  const { id } = useParams()
-  const CATEGORY = id
+  const { id: category } = useParams()
 
-  // Enviar en informulario
-  const handleSubmit = (e) => {
+  // Enviar el formulario
+  async function handleSubmitTask(e) {
     e.preventDefault()
-    handleSubmitTask(CATEGORY)
+    if (taskName === '') {
+      return toast.error('Titulo requerido')
+    }
+    setTaskName('')
+    handleAddTask(category, taskName, user)
   }
 
   return (
-    <Layaout>
+    <Layout>
       <div className='w-full h-full flex flex-col gap-4 overflow-y-auto mb-20'>
         <HeaderTask />
 
@@ -28,7 +35,7 @@ export default function Tasks() {
 
       <form
         className='absolute bottom-0 left-0 right-0 p-4'
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitTask}
       >
         <Input
           name='taskName'
@@ -41,6 +48,6 @@ export default function Tasks() {
           className='px-32'
         />
       </form>
-    </Layaout>
+    </Layout>
   )
 }

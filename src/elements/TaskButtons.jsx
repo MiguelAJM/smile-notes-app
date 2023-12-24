@@ -6,18 +6,23 @@ import {
   IconTrash,
   IconX
 } from '@tabler/icons-react'
+import handleSaveTask from '../firebase/tasks-services/editTask'
+import handleDeleteTask from '../firebase/tasks-services/deleteTask'
 
 export default function TaskButtons({ item }) {
-  const {
-    editTask,
-    handleSaveTask,
-    handleDeleteTask,
-    handleEdit,
-    handleCancelEdit
-  } = useTask()
+  const { editTask, newTaskName, handleEdit, handleClear } =
+    useTask()
 
   // Editar el elemento segun el ID
-  const EDIT_TASK_ID = editTask.id === item.id
+  const editTaskById = editTask.id === item.id
+
+  const editingTask = editTaskById
+    ? () => handleSaveTask(item, newTaskName, handleClear)
+    : () => handleEdit(item)
+
+  const deletingTask = editTaskById
+    ? () => handleClear()
+    : () => handleDeleteTask(item, handleClear)
 
   return (
     <>
@@ -25,21 +30,17 @@ export default function TaskButtons({ item }) {
         radius='full'
         color='success'
         isIconOnly
-        onPress={
-          EDIT_TASK_ID ? () => handleSaveTask(item) : () => handleEdit(item)
-        }
+        onPress={editingTask}
       >
-        {EDIT_TASK_ID ? <IconSquareCheckFilled /> : <IconEdit />}
+        {editTaskById ? <IconSquareCheckFilled /> : <IconEdit />}
       </Button>
       <Button
-        onPress={
-          EDIT_TASK_ID ? () => handleCancelEdit() : () => handleDeleteTask(item)
-        }
+        onPress={deletingTask}
         radius='full'
         color='danger'
         isIconOnly
       >
-        {EDIT_TASK_ID ? <IconX /> : <IconTrash />}
+        {editTaskById ? <IconX /> : <IconTrash />}
       </Button>
     </>
   )
