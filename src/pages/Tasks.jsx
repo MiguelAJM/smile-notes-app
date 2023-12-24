@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom'
 import { useTask } from '../context/TaskProvider'
 import { toast } from 'sonner'
 import { useAuth } from '../context/AuthProvider'
+import { handleAddTask } from '../firebase/tasks-services/createTask'
 import HeaderTask from '../elements/HeaderTask'
 import Layout from '../components/Layout'
 import ListTasks from '../components/ListTasks'
-import handleAddTask from '../firebase/tasks-services/createTask'
 
 export default function Tasks() {
   const { taskName, handleChange, setTaskName } = useTask()
@@ -16,7 +16,7 @@ export default function Tasks() {
   const { id: category } = useParams()
 
   // Enviar el formulario
-  async function handleSubmitTask(e) {
+  const handleSubmitTask = (e) => {
     e.preventDefault()
     if (taskName === '') {
       return toast.error('Titulo requerido')

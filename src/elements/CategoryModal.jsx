@@ -10,7 +10,6 @@ import {
 } from '@nextui-org/react'
 import { useModal } from '../context/ModalProvider'
 import { useCategory } from '../context/CategoryProvider'
-import { bgPrimary } from '../themes'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useAuth } from '../context/AuthProvider'
@@ -19,50 +18,49 @@ import handleEditCategory from '../firebase/categories-services/editCategory'
 
 export default function CategoryModal() {
   const { user } = useAuth()
-  const { modal, activeCategoryModal } = useModal()
-  const {
-    categoryName,
-    editCategory,
-    handleChange,
-    handleClear,
-    setCategoryName
-  } = useCategory()
+  const { modal, toggleModal } = useModal()
+  const { categoryName, editCategory, handleChange, handleClear } =
+    useCategory()
 
   const navigate = useNavigate()
 
   // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
   const editingMode = Object.keys(editCategory).length > 0
 
-  // Enviar el formulario con los datos a la firestore
-  async function handleCategorySubmit(e) {
+  // Crear categoria/editar categoria
+  const handleSubmit = (e) => {
     e.preventDefault()
+    const categoryPath = categoryName.split(' ').join('-').toLowerCase()
+
     if (categoryName === '') {
       return toast.error('Titulo requerido')
     }
 
-    setCategoryName('')
-    handleAddCategory(categoryName, user, handleClear, navigate)
-  }
+    if (editCategory.id !== undefined) {
+      navigate(`/task/${categoryPath}`)
+      handleEditCategory(editCategory, categoryName, categoryPath)
+      handleClear()
+      return toggleModal()
+    }
 
-  // Si el modo edicion esta activo podemos actualizar, en caso contrario se crea una nueva
-  const editingCategory = editingMode
-    ? () => {
-        handleEditCategory(editCategory, categoryName, handleClear, navigate)
-      }
-    : () => handleCategorySubmit()
+    navigate(`/task/${categoryPath}`)
+    handleAddCategory(categoryName, user, categoryPath)
+    handleClear()
+    return toggleModal()
+  }
 
   return (
     <Modal
       className='dark text-foreground bg-background'
       isOpen={modal.category}
-      onOpenChange={activeCategoryModal}
+      onOpenChange={toggleModal}
     >
       <ModalContent>
         {(onClose) => (
           <>
-            <form onSubmit={editingCategory}>
+            <form onSubmit={handleSubmit}>
               <ModalHeader className='flex flex-col gap-1'>
-                {editingMode ? 'Editar Categoria' : 'Crear Categoria'}
+                <h2>{editingMode ? 'Editar Categoria' : 'Crear Categoria'}</h2>
               </ModalHeader>
               <Divider />
               <ModalBody>
@@ -78,14 +76,10 @@ export default function CategoryModal() {
               </ModalBody>
               <Divider />
               <ModalFooter className='grid grid-cols-2 gap-4'>
-                <Button color='danger' onPress={onClose}>
+                <Button color='danger' onPress={onClose} className='font-bold'>
                   Cerrar
                 </Button>
-                <Button
-                  type='submit'
-                  className={`${bgPrimary}`}
-                  onPress={onClose}
-                >
+                <Button type='submit' color='success' className='font-bold'>
                   {editingMode ? 'Guardar' : 'Crear'}
                 </Button>
               </ModalFooter>

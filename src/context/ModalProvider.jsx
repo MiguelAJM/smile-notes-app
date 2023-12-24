@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react'
+import { useCategory } from './CategoryProvider'
 
 const ModalContext = createContext()
 
@@ -12,22 +13,20 @@ export function useModal() {
 
 export default function ModalProvider({ children }) {
   const [modal, setModal] = useState({
-    category: false,
-    task: false
+    category: false
   })
 
-  function activeCategoryModal() {
-    setModal((prevState) => ({ ...prevState, category: !modal.category }))
-  }
+  const { handleClear } = useCategory()
 
-  function activeTaskModal() {
-    setModal((prevState) => ({ ...prevState, task: !modal.task }))
+  const toggleModal = () => {
+    setModal((prevState) => ({ ...prevState, category: !modal.category }))
+    if (modal.category === true) {
+      handleClear('')
+    }
   }
 
   return (
-    <ModalContext.Provider
-      value={{ modal, activeCategoryModal, activeTaskModal }}
-    >
+    <ModalContext.Provider value={{ modal, toggleModal }}>
       {children}
     </ModalContext.Provider>
   )

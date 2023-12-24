@@ -3,16 +3,13 @@ import { toast } from 'sonner'
 import { db } from '../firebaseConfig'
 
 // Editar tarea
-export default async function handleSaveTask(item, newTaskName, handleClear) {
-  handleClear()
-  if (newTaskName === '') {
-    return toast.error('Titulo requerido')
-  }
+export const handleSaveTask = async (item, newTaskName, handleClear) => {
   try {
     const q = doc(db, 'tasks', item.id)
     await updateDoc(q, {
       title: newTaskName
     })
+    handleClear()
     toast.success('Cambios guardados')
   } catch (error) {
     toast.error('Ha ocurrido un error')

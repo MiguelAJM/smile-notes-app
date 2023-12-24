@@ -13,7 +13,7 @@ export default function TaskCard({ item }) {
   const editingTask = editTask.id === item.id
 
   // Establecer tarea completada
-  async function handleCheckTask(item) {
+  const handleCheckTask = async (item) => {
     try {
       const q = doc(db, 'tasks', item.id)
       await updateDoc(q, {

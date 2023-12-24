@@ -6,17 +6,15 @@ import {
   DropdownMenu,
   DropdownTrigger
 } from '@nextui-org/react'
-import { useCategory } from '../context/CategoryProvider'
 import { useModal } from '../context/ModalProvider'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthProvider'
 import { IconHome, IconLogout, IconPlus } from '@tabler/icons-react'
-import ListCategories from './ListCategories'
 import { bgPrimary } from '../themes'
+import ListCategories from './ListCategories'
 
 export default function Aside() {
-  const { handleClear } = useCategory()
-  const { activeCategoryModal } = useModal()
+  const { toggleModal } = useModal()
   const { displayName, email, photoURL, handleSignOut } = useAuth()
 
   const navigate = useNavigate()
@@ -25,10 +23,7 @@ export default function Aside() {
     <aside className='w-1/6 rounded-lg flex flex-col z-10'>
       <header className='relative h-full flex flex-col gap-5'>
         <Button
-          onPress={() => {
-            handleClear()
-            activeCategoryModal()
-          }}
+          onPress={() => toggleModal()}
           size='lg'
           radius='full'
           startContent={<IconPlus />}

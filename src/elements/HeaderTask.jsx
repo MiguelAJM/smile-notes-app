@@ -4,18 +4,20 @@ import { useCategory } from '../context/CategoryProvider'
 import { useParams } from 'react-router-dom'
 
 export default function HeaderTask() {
-  // Obtener la categoria por la URL
+  // Obtener de la categoria por la URL
   const { id } = useParams()
-  const CATEGORY = id
+  const category = id
 
   const { categories, status } = useCategory()
   // Obtener la categoria actual
-  const NEW_CATEGORY =
-    CATEGORY[0].toUpperCase() + CATEGORY.slice(1).split('-').join(' ')
+  const getCurrentCategory =
+    category[0].toUpperCase() + category.slice(1).split('-').join(' ')
 
   // Obtener la fecha de creacion de la categoria
-  const GET_CATEGORY = categories.find((item) => item.categoryId === CATEGORY)
-  const CATEGORY_CREATED = GET_CATEGORY?.date_created
+  const categoryDateCreated = categories.find(
+    (item) => item.categoryId === category
+  )
+  const categoryDate = categoryDateCreated?.date_created
 
   if (status === 'pending' || status === 'idle') {
     return (
@@ -29,11 +31,11 @@ export default function HeaderTask() {
   }
 
   return (
-    <Card className='justify-end min-h-48 p-2'>
+    <Card className='justify-end min-h-48 p-2 shadow-none'>
       <CardFooter className='w-full flex flex-col items-start'>
-        <h2 className='text-6xl font-light mb-2'>{NEW_CATEGORY}</h2>
+        <h2 className='text-6xl font-light mb-2'>{getCurrentCategory}</h2>
         <h3 className='text-2xl font-light capitalize'>
-          {formattedDateCategory(CATEGORY_CREATED)}
+          {formattedDateCategory(categoryDate)}
         </h3>
       </CardFooter>
     </Card>

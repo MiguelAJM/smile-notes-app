@@ -3,7 +3,7 @@ import { db } from '../firebaseConfig'
 import { toast } from 'sonner'
 
 // Crear tarea
-export default async function handleAddTask(categoryName, taskName, user) {
+export const handleAddTask = async (categoryName, taskName, user) => {
   try {
     await addDoc(collection(db, 'tasks'), {
       title: taskName,

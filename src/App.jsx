@@ -13,8 +13,8 @@ export default function App() {
 
   return (
     <main className='w-full min-h-screen theme'>
-      <AnimatePresence mode='load'>
-        <Toaster position='bottom-right' richColors />
+      <Toaster position='bottom-right' richColors />
+      <AnimatePresence mode='wait'>
         <Routes key={location.pathname} location={location}>
           <Route
             path='/'

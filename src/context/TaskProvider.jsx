@@ -72,15 +72,12 @@ export default function TaskProvider({ children }) {
 
   // Cambiar el estado
   function handleChange(e) {
-    switch (e.target.name) {
-      case 'taskName':
-        setTaskName(e.target.value)
-        break
-      case 'editTask':
-        setNewTaskName(e.target.value)
-        break
-      default:
-        break
+    if (e.target.name === 'taskName') {
+      return setTaskName(e.target.value)
+    }
+
+    if (e.target.name === 'editTask') {
+      return setNewTaskName(e.target.value)
     }
   }
 
@@ -88,7 +85,7 @@ export default function TaskProvider({ children }) {
   const handleEdit = (item) => setEditTask(item)
 
   // Limpiar el estado
-  function handleClear() {
+  const handleClear = () => {
     setNewTaskName('')
     setEditTask({})
   }
@@ -100,7 +97,6 @@ export default function TaskProvider({ children }) {
         taskName,
         newTaskName,
         editTask,
-        editingTask,
         status,
         handleChange,
         handleEdit,

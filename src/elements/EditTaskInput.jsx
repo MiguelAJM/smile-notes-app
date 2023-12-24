@@ -1,7 +1,7 @@
 import { Input } from '@nextui-org/react'
 import { useTask } from '../context/TaskProvider'
 import { toast } from 'sonner'
-import handleSaveTask from '../firebase/tasks-services/editTask'
+import { handleSaveTask } from '../firebase/tasks-services/editTask'
 import TaskTitle from './TaskTitle'
 
 export default function EditTaskInput({ item }) {
@@ -11,7 +11,7 @@ export default function EditTaskInput({ item }) {
   const editingTask = editTask.id === item.id
 
   // Enviar el formulario
-  async function handleSubmitEdit(e) {
+  const handleSubmitEdit = (e) => {
     e.preventDefault()
     if (newTaskName === '') {
       return toast.error('Titulo requerido')

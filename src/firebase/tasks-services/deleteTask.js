@@ -3,7 +3,7 @@ import { db } from '../firebaseConfig'
 import { toast } from 'sonner'
 
 // Eliminar tarea
-export default async function handleDeleteTask(item, handleClear) {
+export const handleDeleteTask = async (item, handleClear) => {
   try {
     handleClear()
     const taskRef = doc(db, 'tasks', item.id)

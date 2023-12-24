@@ -4,43 +4,33 @@ import { toast } from 'sonner'
 
 // Editar categorias
 export default async function handleEditCategory(
-  e,
   item,
   categoryName,
-  handleClear,
-  navigate
+  categoryPath
 ) {
-  e.preventDefault()
-  handleClear()
-  if (categoryName === '') {
-    return toast.error('Titulo requerido')
-  }
-  const categoryID = categoryName.split(' ').join('-').toLowerCase()
   try {
     const categoryRef = doc(db, 'categories', item.id)
     const tasksQuery = query(collection(db, 'tasks'))
-
     const tasks = await getDocs(tasksQuery)
 
     const batch = writeBatch(db)
-
     batch.update(categoryRef, {
       categoryTitle: categoryName,
-      categoryId: categoryID
+      categoryId: categoryPath
     })
 
     tasks.forEach((task) => {
       if (task.data().categoryId === item.categoryId) {
         batch.update(doc(db, 'tasks', task.id), {
-          categoryId: categoryID
+          categoryId: categoryPath
         })
       }
     })
 
-    navigate(`/task/${categoryID}`)
     batch.commit()
-    toast.success('Categoria editada')
+    toast.success('Cambios guardados')
   } catch (error) {
     toast.error('Ha ocurrido un error')
+    console.log(error)
   }
 }

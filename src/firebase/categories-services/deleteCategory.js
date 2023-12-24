@@ -3,8 +3,7 @@ import { db } from '../firebaseConfig'
 import { toast } from 'sonner'
 
 // Eliminar categorias y tareas
-export default async function handleDeleteCategory(item, handleClear, navigate) {
-  handleClear()
+export const handleDeleteCategory = async (item, handleClear, navigate) => {
   try {
     const categoryRef = doc(db, 'categories', item.id)
     const tasksQuery = query(collection(db, 'tasks'))
@@ -20,8 +19,9 @@ export default async function handleDeleteCategory(item, handleClear, navigate) 
       }
     })
 
-    navigate('/')
     batch.commit()
+    navigate('/')
+    handleClear()
     toast.success('Categoria eliminada')
   } catch (error) {
     toast.error('Ha ocurrido un error')

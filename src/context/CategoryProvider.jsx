@@ -1,5 +1,3 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { useAuth } from './AuthProvider'
 import {
   collection,
   onSnapshot,
@@ -7,10 +5,10 @@ import {
   query,
   where
 } from 'firebase/firestore'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { useAuth } from './AuthProvider'
 import { db } from '../firebase/firebaseConfig'
 import { toast } from 'sonner'
-import { useNavigate } from 'react-router-dom'
-import handleAddCategory from '../firebase/categories-services/createCategory'
 
 const CategoryContext = createContext()
 
@@ -30,8 +28,6 @@ export default function CategoryProvider({ children }) {
 
   const [editCategory, setEditCategory] = useState({})
   const [status, setStatus] = useState('idle')
-
-  const navigate = useNavigate()
 
   // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
   const editingCategory = Object.keys(editCategory).length > 0
@@ -61,7 +57,6 @@ export default function CategoryProvider({ children }) {
     } catch (error) {
       toast.error('Ha ocurrido un error')
       setStatus('rejected')
-      console.log(error.message)
     }
   }, [user])
 
@@ -81,19 +76,9 @@ export default function CategoryProvider({ children }) {
   const handleEdit = (item) => setEditCategory(item)
 
   // Limpiar el estado
-  function handleClear() {
+  const handleClear = () => {
     setCategoryName('')
     setEditCategory('')
-  }
-
-  // Enviar el formulario con los datos a la firestore
-  async function handleCategorySubmit() {
-    if (categoryName === '') {
-      return toast.error('Titulo requerido')
-    }
-
-    setCategoryName('')
-    handleAddCategory(categoryName, user, handleClear, navigate)
   }
 
   return (
@@ -103,11 +88,9 @@ export default function CategoryProvider({ children }) {
         categoryName,
         editCategory,
         status,
-        handleAddCategory,
         handleEdit,
         handleChange,
         handleClear,
-        handleCategorySubmit,
         setCategoryName
       }}
     >
