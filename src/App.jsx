@@ -7,6 +7,7 @@ import PrivateRoutes from './components/PrivateRoutes'
 import { AnimatePresence } from 'framer-motion'
 import Tasks from './pages/Tasks'
 import CategoryModal from './elements/CategoryModal'
+import NotFound from './pages/NotFound'
 
 export default function App() {
   const location = useLocation()
@@ -16,6 +17,7 @@ export default function App() {
       <Toaster position='top-center' richColors />
       <AnimatePresence mode='wait'>
         <Routes key={location.pathname} location={location}>
+          <Route path='*' element={<NotFound />} />
           <Route
             path='/'
             element={
