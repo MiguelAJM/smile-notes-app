@@ -31,12 +31,14 @@ export default function CategoryModal() {
   // Crear categoria/editar categoria
   const handleSubmit = (e) => {
     e.preventDefault()
-    const categoryPath = categoryName.split(' ').join('-').toLowerCase()
+    const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/g
+    const categoryPath = categoryName.replace(regex, '-').toLowerCase()
 
+    // El titulo es requerido
     if (categoryName === '') {
       return toast.error('Titulo requerido')
     }
-
+    // Si hay una categoria la editamos
     if (editCategory.id !== undefined) {
       navigate(`/task/${categoryPath}`)
       handleEditCategory(editCategory, categoryName, categoryPath)

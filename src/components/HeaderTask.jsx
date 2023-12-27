@@ -45,10 +45,10 @@ export default function HeaderTask() {
     <Card className='justify-end min-h-48 p-2 shadow-none'>
       <CardFooter className='w-full flex justify-between items-end'>
         <article className='flex flex-col'>
-          <h2 className='text-6xl capitalize font-light mb-2'>
+          <h2 className='text-5xl capitalize font-light line-clamp-1 pb-2 mb-1'>
             {categoryName}
           </h2>
-          <h3 className='text-2xl font-light capitalize'>
+          <h3 className='text-xl font-light capitalize'>
             {formattedDate(dateCreated, options, { time: 'full-date' })}
           </h3>
         </article>

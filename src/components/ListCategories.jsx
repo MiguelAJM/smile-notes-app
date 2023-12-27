@@ -47,7 +47,9 @@ export default function ListCategories() {
       className='h-full my-20 flex flex-col gap-3 overflow-y-auto'
     >
       {categories.map((item) => {
-        const path = item.categoryTitle.split(' ').join('-').toLowerCase()
+        const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/g
+        const path = item.categoryTitle.replace(regex, '-').toLowerCase()
+        const title = item.categoryTitle.replace(regex, ' ').toLowerCase()
         const baseStyles = {
           base: [
             'group/edit',
@@ -64,7 +66,7 @@ export default function ListCategories() {
             endContent={<CategoryButton item={item} />}
             classNames={baseStyles}
           >
-            <h2 className='text-xl'>{item.categoryTitle}</h2>
+            <h2 className='text-xl capitalize'>{title}</h2>
           </ListboxItem>
         )
       })}

@@ -40,7 +40,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className='w-full h-full flex flex-col justify-between'>
+      <div className='w-full h-full flex flex-col justify-between text-center mt-5'>
         <TasksStats />
         <Button
           onPress={() => toggleModal()}
