@@ -23,6 +23,7 @@ export default function CategoryModal() {
     useCategory()
 
   const navigate = useNavigate()
+  const categoryPath = categoryName.replace(/[\s/\\/|/]+/g, '-')
 
   // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
   const editingMode = Object.keys(editCategory).length > 0
@@ -70,7 +71,7 @@ export default function CategoryModal() {
                   type='text'
                   name='nameCategory'
                   autoFocus
-                  value={categoryName}
+                  value={categoryPath}
                   onChange={handleChange}
                 />
               </ModalBody>

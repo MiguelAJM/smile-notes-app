@@ -24,7 +24,12 @@ export default function TaskProvider({ children }) {
   const { user } = useAuth()
 
   const [taskName, setTaskName] = useState('')
+  const [priorityName, setPriorityName] = useState('none')
+
+  const [selectedPriority, setSelectedPriority] = useState('all')
+
   const [tasks, setTasks] = useState([])
+  const [completedTasks, setCompletedTasks] = useState(false)
 
   const [newTaskName, setNewTaskName] = useState('')
   const [editTask, setEditTask] = useState({})
@@ -66,12 +71,15 @@ export default function TaskProvider({ children }) {
     if (editingTask) {
       if (user.uid === editTask.uid) {
         setNewTaskName(editTask.title)
+        setPriorityName(editTask.priority)
       }
     }
   }, [editTask])
 
+  //
+
   // Cambiar el estado
-  function handleChange(e) {
+  const handleChange = (e) => {
     if (e.target.name === 'taskName') {
       return setTaskName(e.target.value)
     }
@@ -79,6 +87,20 @@ export default function TaskProvider({ children }) {
     if (e.target.name === 'editTask') {
       return setNewTaskName(e.target.value)
     }
+
+    if (e.target.name === 'priority') {
+      return setPriorityName(e.target.value)
+    }
+  }
+
+  // Filtrar por prioridad
+  const handleSelectPriority = (e) => {
+    setSelectedPriority(e.target.value)
+  }
+
+  // Alternar las tareas terminadas
+  const toggleCompleted = () => {
+    setCompletedTasks(!completedTasks)
   }
 
   // Activar el modo edicion
@@ -86,7 +108,9 @@ export default function TaskProvider({ children }) {
 
   // Limpiar el estado
   const handleClear = () => {
+    setTaskName('')
     setNewTaskName('')
+    setPriorityName('none')
     setEditTask({})
   }
 
@@ -95,12 +119,17 @@ export default function TaskProvider({ children }) {
       value={{
         tasks,
         taskName,
+        priorityName,
         newTaskName,
+        selectedPriority,
         editTask,
+        completedTasks,
         status,
         handleChange,
+        handleSelectPriority,
         handleEdit,
         setTaskName,
+        toggleCompleted,
         handleClear
       }}
     >

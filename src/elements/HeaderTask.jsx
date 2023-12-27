@@ -1,23 +1,40 @@
-import { Card, CardFooter, Skeleton } from '@nextui-org/react'
-import { formattedDateCategory } from '../helpers/formattedDate'
+import {
+  Button,
+  Card,
+  CardFooter,
+  Select,
+  SelectItem,
+  Skeleton,
+  Tooltip
+} from '@nextui-org/react'
 import { useCategory } from '../context/CategoryProvider'
 import { useParams } from 'react-router-dom'
+import { useTask } from '../context/TaskProvider'
+import { IconEyeClosed, IconEye } from '@tabler/icons-react'
+import { prioritys } from '../mocks/proprotys'
+import useCategoryInfo from '../hooks/useCategoryInfo'
+// import { formattedDate } from '../helpers/formattedDate'
 
 export default function HeaderTask() {
-  // Obtener de la categoria por la URL
   const { id } = useParams()
   const category = id
 
   const { categories, status } = useCategory()
-  // Obtener la categoria actual
-  const getCurrentCategory =
-    category[0].toUpperCase() + category.slice(1).split('-').join(' ')
+  const {
+    completedTasks,
+    selectedPriority,
+    toggleCompleted,
+    handleSelectPriority
+  } = useTask()
 
-  // Obtener la fecha de creacion de la categoria
-  const categoryDateCreated = categories.find(
-    (item) => item.categoryId === category
-  )
-  const categoryDate = categoryDateCreated?.date_created
+  const { currentCategory } = useCategoryInfo(category, categories)
+
+  // TODO: Arreglar la fecha
+  // const options = {
+  //   weekday: 'long',
+  //   month: 'long',
+  //   day: '2-digit'
+  // }
 
   if (status === 'pending' || status === 'idle') {
     return (
@@ -30,13 +47,60 @@ export default function HeaderTask() {
     )
   }
 
+  if (status === 'rejected') {
+    return (
+      <Card className='justify-end h-48 p-2'>
+        <CardFooter className='w-full flex flex-col items-start'>
+          <h2 className='text-xl font-medium text-center'>
+            No se ha podido obtener la categoria.
+          </h2>
+        </CardFooter>
+      </Card>
+    )
+  }
+
   return (
     <Card className='justify-end min-h-48 p-2 shadow-none'>
-      <CardFooter className='w-full flex flex-col items-start'>
-        <h2 className='text-6xl font-light mb-2'>{getCurrentCategory}</h2>
-        <h3 className='text-2xl font-light capitalize'>
-          {formattedDateCategory(categoryDate)}
-        </h3>
+      <CardFooter className='w-full flex justify-between items-end'>
+        <article className='flex flex-col'>
+          <h2 className='text-6xl font-light mb-2'>{currentCategory}</h2>
+          {/* <h3 className='text-2xl font-light capitalize'>
+            {formattedDate(categoryDate, options, false)}
+          </h3> */}
+        </article>
+        <div className='flex w-1/2 items-center gap-4'>
+          <Tooltip
+            showArrow
+            content={completedTasks ? 'Mostrar todo' : 'Tareas completadas'}
+          >
+            <Button
+              onPress={() => toggleCompleted()}
+              radius='sm'
+              size='lg'
+              fullWidth
+              startContent={completedTasks ? <IconEyeClosed /> : <IconEye />}
+            >
+              {completedTasks ? 'No completadas' : 'Completadas'}{' '}
+            </Button>
+          </Tooltip>
+          <Select
+            aria-label='Priority Filter'
+            label='Filtrar prioridad'
+            defaultSelectedKeys={[selectedPriority]}
+            onChange={handleSelectPriority}
+            size='sm'
+          >
+            {prioritys.map((items) => (
+              <SelectItem
+                textValue={items.label}
+                key={items.value}
+                value={items.value}
+              >
+                {items.label}
+              </SelectItem>
+            ))}
+          </Select>
+        </div>
       </CardFooter>
     </Card>
   )

@@ -1,23 +1,42 @@
-export function formattedDate(fecha) {
-  const newDate = new Date(fecha)
+// Formatear la fecha con el dia/mes/año
+export const formattedDate = (date, options, onlyHourOrFull) => {
+  const newDate = new Date(date)
 
-  const options = {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true
+  if (onlyHourOrFull) {
+    return newDate.toLocaleTimeString('es-ES', options)
+  } else {
+    return newDate.toLocaleDateString('es-ES', options)
   }
-
-  return newDate.toLocaleTimeString('es-ES', options)
 }
 
-export function formattedDateCategory(fecha) {
-  const newDate = new Date(fecha)
+// Comprobar si es ayer o hoy
+export const isTodayOrYesterday = (date, options, onlyHourOrFull) => {
+  const newDate = formattedDate(date, options, onlyHourOrFull)
+  const storedDate = new Date(date)
+  const currentDate = new Date()
 
-  const options = {
-    weekday: 'long',
-    month: 'long',
-    day: '2-digit'
+  if (
+    storedDate.getDate() === currentDate.getDate() &&
+    storedDate.getMonth() === currentDate.getMonth() &&
+    storedDate.getFullYear() === currentDate.getFullYear()
+  ) {
+    return `Hoy a las: ${newDate}`
   }
 
-  return newDate.toLocaleDateString('es-ES', options)
+  currentDate.setDate(currentDate.getDate() - 1)
+  if (
+    storedDate.getDate() === currentDate.getDate() &&
+    storedDate.getMonth() === currentDate.getMonth() &&
+    storedDate.getFullYear() === currentDate.getFullYear()
+  ) {
+    return `Ayer a las: ${newDate}`
+  }
+
+  const option = {
+    year: 'numeric',
+    month: 'numeric',
+    day: '2-digit',
+    hour12: true
+  }
+  return formattedDate(date, option, false)
 }

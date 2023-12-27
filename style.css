@@ -27,6 +27,6 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #8b5cf6;
+  background-color: transparent;
   border-radius: 10px;
 }
