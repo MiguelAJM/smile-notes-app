@@ -46,7 +46,7 @@ export default function RegisterPage() {
             <Input
               className='p-3 text-dark rounded-full mb-5 outline-2 outline-secondary/75'
               type='password'
-              name='pass'
+              name='password'
               id='pass'
               value={user.password}
               onChange={handleChange}
