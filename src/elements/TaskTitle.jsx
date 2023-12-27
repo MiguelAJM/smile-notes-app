@@ -7,6 +7,7 @@ export default function TaskTitle({ item }) {
   const { editTask, newTaskName, priorityName, handleChange, handleClear } =
     useTask()
 
+  // Opciones para formatear la fecha
   const options = {
     hour: 'numeric',
     minute: 'numeric',
@@ -41,7 +42,7 @@ export default function TaskTitle({ item }) {
         <article>
           <h2 className='text-2xl font-bold'>{item.title}</h2>
           <p className='text-sm mt-1.5 text-white/50'>
-            {isTodayOrYesterday(item.date_created, options, true)}
+            {isTodayOrYesterday(item.date_created, options, { time: 'hours' })}
           </p>
         </article>
       )}

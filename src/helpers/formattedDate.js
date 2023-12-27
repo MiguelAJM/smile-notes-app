@@ -1,17 +1,19 @@
 // Formatear la fecha con el dia/mes/año
-export const formattedDate = (date, options, onlyHourOrFull) => {
+export const formattedDate = (date, options, mode) => {
   const newDate = new Date(date)
 
-  if (onlyHourOrFull) {
+  if (mode.time === 'hours') {
     return newDate.toLocaleTimeString('es-ES', options)
-  } else {
+  }
+
+  if (mode.time === 'full-date') {
     return newDate.toLocaleDateString('es-ES', options)
   }
 }
 
 // Comprobar si es ayer o hoy
-export const isTodayOrYesterday = (date, options, onlyHourOrFull) => {
-  const newDate = formattedDate(date, options, onlyHourOrFull)
+export const isTodayOrYesterday = (date, options, mode) => {
+  const newDate = formattedDate(date, options, mode)
   const storedDate = new Date(date)
   const currentDate = new Date()
 
@@ -38,5 +40,5 @@ export const isTodayOrYesterday = (date, options, onlyHourOrFull) => {
     day: '2-digit',
     hour12: true
   }
-  return formattedDate(date, option, false)
+  return formattedDate(date, option, { time: 'full-date' })
 }

@@ -12,8 +12,7 @@ import { useParams } from 'react-router-dom'
 import { useTask } from '../context/TaskProvider'
 import { IconEyeClosed, IconEye } from '@tabler/icons-react'
 import { prioritys } from '../mocks/proprotys'
-import useCategoryInfo from '../hooks/useCategoryInfo'
-// import { formattedDate } from '../helpers/formattedDate'
+import { formattedDate } from '../helpers/formattedDate'
 
 export default function HeaderTask() {
   const { id } = useParams()
@@ -27,14 +26,13 @@ export default function HeaderTask() {
     handleSelectPriority
   } = useTask()
 
-  const { currentCategory } = useCategoryInfo(category, categories)
-
-  // TODO: Arreglar la fecha
-  // const options = {
-  //   weekday: 'long',
-  //   month: 'long',
-  //   day: '2-digit'
-  // }
+  // Opciones para formatear la fecha
+  const options = {
+    weekday: 'long',
+    day: '2-digit',
+    month: 'long',
+    hour12: true
+  }
 
   if (status === 'pending' || status === 'idle') {
     return (
@@ -59,14 +57,24 @@ export default function HeaderTask() {
     )
   }
 
+  // Obtener la categoria actual
+  const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/g
+  const categoryName = category.replace(regex, ' ')
+
+  // Obtener la fecha de ceracion de la categoria
+  const categoryCreated = categories.find((item) => item.date_created)
+  const dateCreated = categoryCreated.date_created
+
   return (
     <Card className='justify-end min-h-48 p-2 shadow-none'>
       <CardFooter className='w-full flex justify-between items-end'>
         <article className='flex flex-col'>
-          <h2 className='text-6xl font-light mb-2'>{currentCategory}</h2>
-          {/* <h3 className='text-2xl font-light capitalize'>
-            {formattedDate(categoryDate, options, false)}
-          </h3> */}
+          <h2 className='text-6xl capitalize font-light mb-2'>
+            {categoryName}
+          </h2>
+          <h3 className='text-2xl font-light capitalize'>
+            {formattedDate(dateCreated, options, { time: 'full-date' })}
+          </h3>
         </article>
         <div className='flex w-1/2 items-center gap-4'>
           <Tooltip

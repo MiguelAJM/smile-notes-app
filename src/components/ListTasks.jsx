@@ -2,6 +2,7 @@ import TaskCard from '../elements/TaskCard'
 import { useParams } from 'react-router-dom'
 import { useTask } from '../context/TaskProvider'
 import { Skeleton } from '@nextui-org/react'
+import { isCompletedTasks } from '../helpers/isCompletedTasks'
 
 export default function ListCardTasks() {
   const { tasks, status, completedTasks, selectedPriority } = useTask()
@@ -13,17 +14,10 @@ export default function ListCardTasks() {
   // Obtener las tareas por categoria
   const tasksByCategory = tasks.filter((item) => item.categoryId === category)
 
-  const isCompleted = (tasks) => {
-    return tasks.filter((item) => {
-      if (completedTasks) {
-        return item.completed === completedTasks || item.completed
-      }
-      return tasks
-    })
-  }
+  // Obtenemos las tareas completadas
+  const completed = isCompletedTasks(tasksByCategory, completedTasks)
 
-  const completed = isCompleted(tasksByCategory)
-
+  // Filtramos las tareas completadas
   const filteredTasks = completed.filter(
     (item) => selectedPriority === 'all' || item.priority === selectedPriority
   )
