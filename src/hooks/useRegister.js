@@ -40,17 +40,17 @@ export default function useRegister() {
       // Errores
       switch (err.code) {
         case 'auth/email-already-in-use':
-          toast.error('Ya existe un correo electronico con esta dirección.')
-          break
+          return toast.error(
+            'Ya existe un correo electronico con esta dirección.'
+          )
         case 'auth/invalid-email':
-          toast.error('Este correo electronico no es válido.')
-          break
+          return toast.error('Este correo electronico no es válido.')
         case 'auth/weak-password':
-          toast.error('La contraseña debe tener al menos 6 carácteres.')
-          break
+          return toast.error('La contraseña debe tener al menos 6 carácteres.')
         default:
-          toast.error('Hubo un error al crear la cuenta, inténtalo más tarde.')
-          break
+          return toast.error(
+            'Hubo un error al crear la cuenta, inténtalo más tarde.'
+          )
       }
     }
   }
@@ -63,7 +63,28 @@ export default function useRegister() {
       toast.success('Inicio de sesión exitoso.')
       navigate('/')
     } catch (error) {
-      toast.error('Ha ocurrido un error inesperado, inténtalo más tarde.')
+      switch (error.code) {
+        case 'auth/popup-closed-by-user':
+          return toast.info('Inicio de sesión cancelado.')
+        case 'auth/unauthorized-domain':
+          return toast.error('No se puede iniciar sesión en este dominio.')
+        case 'auth/popup-blocked':
+          return toast.error(
+            'Se requiere acceso a ventanas emergentes para iniciar sesión.'
+          )
+        case 'auth/cancelled-popup-request':
+          return toast.error(
+            'Solo se puede abrir una ventana emergente a la vez.'
+          )
+        case 'auth/account-exists-with-different-credential':
+          return toast.error(
+            'No se puede crear una nueva cuenta con este correo electrónico.'
+          )
+        default:
+          return toast.error(
+            'Ha ocurrido un error inesperado, inténtalo más tarde.'
+          )
+      }
     }
   }
 

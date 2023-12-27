@@ -20,7 +20,7 @@ export default function useLogin() {
     setUser({ ...user, [e.target.name]: e.target.value })
   }
 
-  // Crear la cuenta
+  // Iniciar sesion
   async function handleSubmit(e) {
     e.preventDefault()
 
@@ -38,20 +38,17 @@ export default function useLogin() {
       navigate('/')
     } catch (err) {
       // Errores
-      console.log(err.code)
       switch (err.code) {
         case 'auth/invalid-email':
-          toast.error('Este correo electronico no es válido.')
-          break
+          return toast.error('Este correo electronico no es válido.')
         case 'auth/user-not-found':
-          toast.error('Este usuario no existe.')
-          break
+          return toast.error('Este usuario no existe.')
         case 'auth/invalid-credential':
-          toast.error('El correo o contraseña no son válidos.')
-          break
+          return toast.error('El correo o contraseña no son válidos.')
+        case 'auth/wrong-password':
+          return toast.error('Contraseña incorrecta.')
         default:
-          toast.error('Hubo un error al iniciar sesión.')
-          break
+          return toast.error('Hubo un error al iniciar sesión.')
       }
     }
   }
@@ -64,7 +61,28 @@ export default function useLogin() {
       toast.success('Inicio de sesión exitoso. ¡Bienvenido/a de vuelta!')
       navigate('/')
     } catch (error) {
-      toast.error('Ha ocurrido un error inesperado, inténtalo más tarde.')
+      switch (error.code) {
+        case 'auth/popup-closed-by-user':
+          return toast.info('Inicio de sesión cancelado.')
+        case 'auth/unauthorized-domain':
+          return toast.error('No se puede iniciar sesión en este dominio.')
+        case 'auth/popup-blocked':
+          return toast.error(
+            'Se requiere acceso a ventanas emergentes para iniciar sesión.'
+          )
+        case 'auth/cancelled-popup-request':
+          return toast.error(
+            'Solo se puede abrir una ventana emergente a la vez.'
+          )
+        case 'auth/account-exists-with-different-credential':
+          return toast.error(
+            'No se puede crear una nueva cuenta con este correo electrónico.'
+          )
+        default:
+          return toast.error(
+            'Ha ocurrido un error inesperado, inténtalo más tarde.'
+          )
+      }
     }
   }
 
