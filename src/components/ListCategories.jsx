@@ -1,16 +1,30 @@
-import { Listbox, ListboxItem, Skeleton } from '@nextui-org/react'
+import { Listbox, ListboxItem } from '@nextui-org/react'
 import { IconArrowBadgeRightFilled } from '@tabler/icons-react'
 import { useCategory } from '../context/CategoryProvider'
 import { useParams } from 'react-router-dom'
 import CategoryButton from '../elements/CategoryButton'
 import { bgHover, bgPrimary } from '../themes'
+import { Grid } from 'react-loader-spinner'
 
 export default function ListCategories() {
   const { id } = useParams()
   const { categories, status } = useCategory()
 
   if (status === 'pending' || status === 'idle') {
-    return <Skeleton className='max-w-full h-11 my-20 rounded-lg' />
+    return (
+      <div className='w-full flex justify-center'>
+        <Grid
+          visible={true}
+          height='80'
+          width='80'
+          color='#6667E2'
+          ariaLabel='grid-loading'
+          radius='12.5'
+          wrapperStyle={{}}
+          wrapperClass='my-24 grid-wrapper'
+        />
+      </div>
+    )
   }
 
   if (status === 'rejected') {

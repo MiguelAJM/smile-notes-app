@@ -1,11 +1,10 @@
 import TaskCard from '../elements/TaskCard'
 import { useParams } from 'react-router-dom'
 import { useTask } from '../context/TaskProvider'
-import { Skeleton } from '@nextui-org/react'
 import { isCompletedTasks } from '../helpers/isCompletedTasks'
 
 export default function ListCardTasks() {
-  const { tasks, status, completedTasks, selectedPriority } = useTask()
+  const { tasks, completedTasks, selectedPriority } = useTask()
 
   // Obtener la categoria por la URL
   const { id } = useParams()
@@ -21,20 +20,6 @@ export default function ListCardTasks() {
   const filteredTasks = completed.filter(
     (item) => selectedPriority === 'all' || item.priority === selectedPriority
   )
-
-  if (status === 'pending' || status === 'idle') {
-    return <Skeleton className='max-w-full h-16 mb-20 rounded-lg' />
-  }
-
-  if (status === 'rejected') {
-    return (
-      <article className='my-20 overflow-y-auto'>
-        <h2 className='text-xl font-medium text-center'>
-          Ha ocurrido un error, inténtalo más tarde.
-        </h2>
-      </article>
-    )
-  }
 
   return (
     <ul className='relative grid gap-2'>

@@ -28,8 +28,8 @@
     "framer-motion": "^10.16.16",
     "marked-react": "^2.0.0",
     "react": "18.2.0",
-    "react-calendar": "^4.7.0",
     "react-dom": "18.2.0",
+    "react-loader-spinner": "^6.1.6",
     "react-router-dom": "6.21.0",
     "sonner": "^1.2.4",
     "uuid": "^9.0.1"

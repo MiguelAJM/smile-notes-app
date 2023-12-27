@@ -1,38 +1,61 @@
-import { Card } from '@nextui-org/react'
 import Layout from '../components/Layout'
 import { useTask } from '../context/TaskProvider'
-import { getTotalTasks } from '../helpers/getTotalTasks'
+import TaskCard from '../elements/TaskCard'
+import { isCompletedTasks } from '../helpers/isCompletedTasks'
+import { Bars } from 'react-loader-spinner'
+import HeaderHome from '../elements/HeaderHome'
+import TasksStats from '../components/TasksStats'
 
 export default function Home() {
-  const { tasks } = useTask()
+  const { tasks, status, completedTasks, selectedPriority } = useTask()
+
+  const completed = isCompletedTasks(tasks, completedTasks)
+
+  // Filtramos las tareas completadas
+  const filteredTasks = completed.filter(
+    (item) => selectedPriority === 'all' || item.priority === selectedPriority
+  )
+
+  if (status === 'pending' || status === 'idle') {
+    return (
+      <Layout>
+        <div className='w-full h-full flex justify-center items-center'>
+          <Bars
+            height='275'
+            width='275'
+            color='#181818'
+            ariaLabel='bars-loading'
+            visible={true}
+          />
+        </div>
+      </Layout>
+    )
+  }
+
+  if (status === 'rejected') {
+    return (
+      <Layout>
+        <div className='w-full flex flex-col items-start'>
+          <h2 className='text-xl font-medium text-center'>
+            No se ha podido obtener la categoria.
+          </h2>
+        </div>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
-      <div className='grid grid-cols-3 gap-4'>
-        <Card className='aspect-square grid place-content-center'>
-          <div>
-            <h2 className='text-4xl font-bold'>Tareas</h2>
-            <p className='text-8xl text-center text-yellow-500'>
-              {getTotalTasks(tasks, { task: 'all' })}
-            </p>
-          </div>
-        </Card>
-        <Card className='aspect-square grid place-content-center'>
-          <div>
-            <h2 className='text-4xl font-bold'>Completadas</h2>
-            <p className='text-8xl text-center text-lime-500'>
-              {getTotalTasks(tasks, { task: 'completed' })}
-            </p>
-          </div>
-        </Card>
-        <Card className='aspect-square grid place-content-center'>
-          <div>
-            <h2 className='text-4xl font-bold'>Por completar</h2>
-            <p className='text-8xl text-center text-red-500'>
-              {getTotalTasks(tasks, { task: 'no-completed' })}
-            </p>
-          </div>
-        </Card>
+      <TasksStats />
+      <div className='flex flex-col gap-4 h-full overflow-hidden'>
+        <HeaderHome />
+        <ul className='flex flex-col gap-4 h-full overflow-y-auto'>
+          {filteredTasks.map((item) => (
+            <li key={item.id}>
+              <TaskCard item={item} />
+            </li>
+          ))}
+        </ul>
       </div>
     </Layout>
   )

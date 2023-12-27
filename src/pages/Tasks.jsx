@@ -8,9 +8,10 @@ import HeaderTask from '../elements/HeaderTask'
 import Layout from '../components/Layout'
 import ListTasks from '../components/ListTasks'
 import { prioritys } from '../mocks/proprotys'
+import { Bars } from 'react-loader-spinner'
 
 export default function Tasks() {
-  const { taskName, handleChange, priorityName, handleClear } = useTask()
+  const { taskName, handleChange, priorityName, handleClear, status } = useTask()
   const { user } = useAuth()
 
   // Obtener la categoria por la URL
@@ -31,12 +32,38 @@ export default function Tasks() {
     handleAddTask(category, taskName, user, priorityName)
   }
 
+  if (status === 'pending' || status === 'idle') {
+    return (
+      <Layout>
+        <div className='w-full h-full flex justify-center items-center'>
+          <Bars
+            height='275'
+            width='275'
+            color='#181818'
+            ariaLabel='bars-loading'
+            visible={true}
+          />
+        </div>
+      </Layout>
+    )
+  }
+
+  if (status === 'rejected') {
+    return (
+      <Layout>
+        <div className='w-full flex flex-col items-start'>
+          <h2 className='text-xl font-medium text-center'>
+            No se ha podido obtener la categoria.
+          </h2>
+        </div>
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
-
         <div className='w-full flex flex-col gap-4 h-full overflow-y-auto mb-20'>
           <HeaderTask />
-
           <ListTasks />
         </div>
 
