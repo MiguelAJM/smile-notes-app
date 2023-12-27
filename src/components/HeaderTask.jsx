@@ -34,7 +34,7 @@ export default function HeaderTask() {
   }
 
   // Obtener la categoria actual
-  const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/g
+  const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?\s]+/g
   const categoryName = category.replace(regex, ' ')
 
   // Obtener la fecha de ceracion de la categoria

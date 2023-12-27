@@ -47,7 +47,7 @@ export default function ListCategories() {
       className='h-full my-20 flex flex-col gap-3 overflow-y-auto'
     >
       {categories.map((item) => {
-        const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/g
+        const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?\s]+/g
         const path = item.categoryTitle.replace(regex, '-').toLowerCase()
         const title = item.categoryTitle.replace(regex, ' ').toLowerCase()
         const baseStyles = {
