@@ -13,11 +13,10 @@ export default async function handleAddCategory(
       categoryTitle: categoryName,
       categoryId: categoryPath,
       date_created: Date.now(),
-      uid: user.uid
+      author_uid: user.uid
     })
     toast.success('Categoria creada')
   } catch (error) {
     toast.error('Ha ocurrido un error')
-    console.log(error)
   }
 }

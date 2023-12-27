@@ -16,7 +16,7 @@ export const handleAddTask = async (
       priority: priorityName,
       completed: false,
       date_created: Date.now(),
-      uid: user.uid
+      author_uid: user.uid
     })
     toast.success('Tarea agregada')
   } catch (error) {

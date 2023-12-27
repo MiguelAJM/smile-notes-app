@@ -39,7 +39,7 @@ export default function CategoryProvider({ children }) {
       if (user !== null) {
         const q = query(
           collection(db, 'categories'),
-          where('uid', '==', user.uid),
+          where('author_uid', '==', user.uid),
           orderBy('date_created', 'desc')
         )
 
@@ -63,7 +63,7 @@ export default function CategoryProvider({ children }) {
   // Rellenar los inputs en el modo edicion
   useEffect(() => {
     if (editingCategory) {
-      if (user.uid === editCategory.uid) {
+      if (user.uid === editCategory.author_uid) {
         setCategoryName(editCategory.categoryTitle)
       }
     }

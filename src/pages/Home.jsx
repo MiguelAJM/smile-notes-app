@@ -1,20 +1,14 @@
-import Layout from '../components/Layout'
 import { useTask } from '../context/TaskProvider'
-import TaskCard from '../elements/TaskCard'
-import { isCompletedTasks } from '../helpers/isCompletedTasks'
 import { Bars } from 'react-loader-spinner'
-import HeaderHome from '../elements/HeaderHome'
+import { Button } from '@nextui-org/react'
+import { IconPlus } from '@tabler/icons-react'
+import { useModal } from '../context/ModalProvider'
+import Layout from '../components/Layout'
 import TasksStats from '../components/TasksStats'
 
 export default function Home() {
-  const { tasks, status, completedTasks, selectedPriority } = useTask()
-
-  const completed = isCompletedTasks(tasks, completedTasks)
-
-  // Filtramos las tareas completadas
-  const filteredTasks = completed.filter(
-    (item) => selectedPriority === 'all' || item.priority === selectedPriority
-  )
+  const { status } = useTask()
+  const { toggleModal } = useModal()
 
   if (status === 'pending' || status === 'idle') {
     return (
@@ -46,16 +40,16 @@ export default function Home() {
 
   return (
     <Layout>
-      <TasksStats />
-      <div className='flex flex-col gap-4 h-full overflow-hidden'>
-        <HeaderHome />
-        <ul className='flex flex-col gap-4 h-full overflow-y-auto'>
-          {filteredTasks.map((item) => (
-            <li key={item.id}>
-              <TaskCard item={item} />
-            </li>
-          ))}
-        </ul>
+      <div className='w-full h-full flex flex-col justify-between'>
+        <TasksStats />
+        <Button
+          onPress={() => toggleModal()}
+          size='lg'
+          startContent={<IconPlus />}
+          className='bg-[#181818]'
+        >
+          Crear categoria
+        </Button>
       </div>
     </Layout>
   )

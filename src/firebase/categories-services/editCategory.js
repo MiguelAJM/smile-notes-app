@@ -31,6 +31,5 @@ export default async function handleEditCategory(
     toast.success('Cambios guardados')
   } catch (error) {
     toast.error('Ha ocurrido un error')
-    console.log(error)
   }
 }

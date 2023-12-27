@@ -1,13 +1,13 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { Toaster } from 'sonner'
+import { AnimatePresence } from 'framer-motion'
 import Home from './pages/Home'
 import RegisterPage from './pages/auth/RegisterPage'
 import LoginPage from './pages/auth/LoginPage'
 import PrivateRoutes from './components/PrivateRoutes'
-import { AnimatePresence } from 'framer-motion'
 import Tasks from './pages/Tasks'
-import CategoryModal from './elements/CategoryModal'
 import NotFound from './pages/NotFound'
+import CategoryModal from './components/CategoryModal'
 
 export default function App() {
   const location = useLocation()
@@ -17,7 +17,10 @@ export default function App() {
       <Toaster position='top-center' richColors />
       <AnimatePresence mode='wait'>
         <Routes key={location.pathname} location={location}>
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
           <Route path='*' element={<NotFound />} />
+
           <Route
             path='/'
             element={
@@ -34,8 +37,6 @@ export default function App() {
               </PrivateRoutes>
             }
           />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
         </Routes>
       </AnimatePresence>
 

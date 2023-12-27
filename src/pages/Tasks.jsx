@@ -4,11 +4,11 @@ import { useTask } from '../context/TaskProvider'
 import { toast } from 'sonner'
 import { useAuth } from '../context/AuthProvider'
 import { handleAddTask } from '../firebase/tasks-services/createTask'
-import HeaderTask from '../elements/HeaderTask'
-import Layout from '../components/Layout'
-import ListTasks from '../components/ListTasks'
 import { prioritys } from '../mocks/proprotys'
 import { Bars } from 'react-loader-spinner'
+import Layout from '../components/Layout'
+import ListTasks from '../components/ListTasks'
+import HeaderTask from '../components/HeaderTask'
 
 export default function Tasks() {
   const { taskName, handleChange, priorityName, handleClear, status } = useTask()

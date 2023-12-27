@@ -45,7 +45,7 @@ export default function TaskProvider({ children }) {
         setStatus('pending')
         const q = query(
           collection(db, 'tasks'),
-          where('uid', '==', user.uid),
+          where('author_uid', '==', user.uid),
           orderBy('date_created', 'desc')
         )
 
@@ -69,7 +69,7 @@ export default function TaskProvider({ children }) {
   // Rellenar los inputs en el modo edicion
   useEffect(() => {
     if (editingTask) {
-      if (user.uid === editTask.uid) {
+      if (user.uid === editTask.author_uid) {
         setNewTaskName(editTask.title)
         setPriorityName(editTask.priority)
       }
