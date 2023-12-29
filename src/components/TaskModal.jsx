@@ -68,15 +68,17 @@ export default function TaskModal() {
               <ModalBody>
                 <div className='grid grid-cols-1 my-2 gap-4'>
                   <Input
+                    autoFocus
+                    isRequired
                     label='Titulo'
                     type='text'
                     name='taskName'
-                    autoFocus
                     value={taskName}
                     onChange={handleChange}
                   />
                   <Select
                     className='w-full'
+                    isRequired
                     size='md'
                     name='priority'
                     label='Prioridad'

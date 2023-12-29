@@ -81,10 +81,11 @@ export default function CategoryModal() {
               <ModalBody>
                 <Input
                   className='my-5'
+                  autoFocus
+                  isRequired
                   label='Titulo'
                   type='text'
                   name='nameCategory'
-                  autoFocus
                   value={categoryTitle}
                   onChange={handleChange}
                 />
