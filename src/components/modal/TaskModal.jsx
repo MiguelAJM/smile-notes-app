@@ -23,8 +23,14 @@ export default function TaskModal() {
   const { id: category } = useParams()
 
   const { modal, toggleModalTask } = useModal()
-  const { taskName, handleChange, priorityName, handleClear, editTask, editingTask } =
-    useTask()
+  const {
+    taskName,
+    handleChange,
+    priorityName,
+    handleClear,
+    editTask,
+    editingTask
+  } = useTask()
   const { user } = useAuth()
 
   // Enviar el formulario
@@ -82,7 +88,9 @@ export default function TaskModal() {
                     label='Prioridad'
                     placeholder='Seleccionar'
                     onChange={handleChange}
-                    defaultSelectedKeys={[editTask.priority]}
+                    defaultSelectedKeys={[
+                      editingTask ? editTask.priority : priorityName
+                    ]}
                   >
                     {priorities.slice(1, 5).map((items) => (
                       <SelectItem key={items.value} value={items.value}>
