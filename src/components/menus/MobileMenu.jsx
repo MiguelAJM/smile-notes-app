@@ -1,5 +1,6 @@
-import { Button, Link, useMenu } from '@nextui-org/react'
+import { Button, Link } from '@nextui-org/react'
 import { bgPrimary } from '../../themes'
+import { useMenu } from '../../context/MenuProvider'
 import CategoryList from '../categories/CategoryList'
 
 export default function MobileMenu() {
