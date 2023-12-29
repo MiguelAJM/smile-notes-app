@@ -41,6 +41,7 @@ export default function CategoryModal() {
     const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/g
     const categoryPath = categoryName.replace(regex, '-').toLowerCase()
 
+    // Evitar crear la misma categoria
     if (currentCategory) {
       return toast.error('Esta categoria ya existe')
     }
