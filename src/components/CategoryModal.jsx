@@ -15,26 +15,35 @@ import { toast } from 'sonner'
 import { useAuth } from '../context/AuthProvider'
 import handleAddCategory from '../firebase/categories-services/createCategory'
 import handleEditCategory from '../firebase/categories-services/editCategory'
+import { isCategoryExists } from '../helpers/isCategoryExists'
 
 export default function CategoryModal() {
-  const { user } = useAuth()
-  const { modal, toggleModalCategory } = useModal()
-  const { categoryName, editCategory, handleChange, handleClear } =
-    useCategory()
-
   const navigate = useNavigate()
+  const { user } = useAuth()
+
+  const { modal, toggleModalCategory } = useModal()
+  const {
+    categories,
+    categoryName,
+    editCategory,
+    editingCategory,
+    handleChange,
+    handleClear
+  } = useCategory()
+
   const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?\s]+/g
   const categoryTitle = categoryName.replace(regex, '-')
 
-  // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
-  const editingMode = Object.keys(editCategory).length > 0
-
   // Crear categoria/editar categoria
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    const currentCategory = isCategoryExists(categories, categoryTitle)
     const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/g
     const categoryPath = categoryName.replace(regex, '-').toLowerCase()
 
+    if (currentCategory) {
+      return toast.error('Esta categoria ya existe')
+    }
     // El titulo es requerido
     if (categoryName === '') {
       return toast.error('Titulo requerido')
@@ -64,7 +73,9 @@ export default function CategoryModal() {
           <>
             <form onSubmit={handleSubmit}>
               <ModalHeader className='flex flex-col gap-1'>
-                <h2>{editingMode ? 'Editar Categoria' : 'Crear Categoria'}</h2>
+                <h2>
+                  {editingCategory ? 'Editar Categoria' : 'Crear Categoria'}
+                </h2>
               </ModalHeader>
               <Divider />
               <ModalBody>
@@ -84,7 +95,7 @@ export default function CategoryModal() {
                   Cerrar
                 </Button>
                 <Button type='submit' color='success' className='font-bold'>
-                  {editingMode ? 'Guardar' : 'Crear'}
+                  {editingCategory ? 'Guardar' : 'Crear'}
                 </Button>
               </ModalFooter>
             </form>

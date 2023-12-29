@@ -19,7 +19,6 @@ export const handleDeleteCategory = async (
     batch.delete(categoryRef)
 
     tasks.forEach((task) => {
-      console.log(task.data().author_uid)
       if (task.data().categoryId === item.categoryId) {
         if (task.data().author_uid === user.uid) {
           batch.delete(doc(db, 'tasks', task.id))

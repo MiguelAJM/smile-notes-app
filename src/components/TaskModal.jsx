@@ -23,7 +23,6 @@ export default function TaskModal() {
   const { id: category } = useParams()
 
   const { modal, toggleModalTask } = useModal()
-
   const { taskName, handleChange, priorityName, handleClear, editTask } =
     useTask()
   const { user } = useAuth()
@@ -34,6 +33,7 @@ export default function TaskModal() {
   // Enviar el formulario
   const handleSubmitTask = (e) => {
     e.preventDefault()
+
     if (taskName === '') {
       return toast.error('Titulo requerido')
     }
