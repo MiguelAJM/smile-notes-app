@@ -73,9 +73,6 @@ export default function RegisterPage() {
           </form>
         </div>
       </Card>
-      <div
-        className={`${bgSecondary} absolute top-0 left-0 right-0 bottom-0`}
-      ></div>
     </section>
   )
 }
