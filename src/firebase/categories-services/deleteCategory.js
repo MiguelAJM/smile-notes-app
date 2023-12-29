@@ -3,7 +3,7 @@ import { db } from '../firebaseConfig'
 import { toast } from 'sonner'
 
 // Eliminar categorias y tareas
-export const handleDeleteCategory = async (item, handleClear, navigate) => {
+export const handleDeleteCategory = async (item, handleClear, user, navigate) => {
   try {
     const categoryRef = doc(db, 'categories', item.id)
     const tasksQuery = query(collection(db, 'tasks'))
@@ -15,7 +15,9 @@ export const handleDeleteCategory = async (item, handleClear, navigate) => {
 
     tasks.forEach((task) => {
       if (task.data().categoryId === item.categoryId) {
-        batch.delete(doc(db, 'tasks', task.id))
+        if (task.data().author_uid === user.uid) {
+          batch.delete(doc(db, 'tasks', task.id))
+        }
       }
     })
 

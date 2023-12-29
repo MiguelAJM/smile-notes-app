@@ -10,8 +10,11 @@ import { useCategory } from '../context/CategoryProvider'
 import { useModal } from '../context/ModalProvider'
 import { useNavigate } from 'react-router-dom'
 import { handleDeleteCategory } from '../firebase/categories-services/deleteCategory'
+import { useAuth } from '../context/AuthProvider'
 
 export default function CategoryButton({ item }) {
+  const { user } = useAuth()
+
   const { toggleModalCategory } = useModal()
   const { handleEdit, handleClear } = useCategory()
 
@@ -48,7 +51,9 @@ export default function CategoryButton({ item }) {
           color='danger'
           key='delete-category'
           className='text-danger'
-          onPress={() => handleDeleteCategory(item, handleClear, navigate)}
+          onPress={() =>
+            handleDeleteCategory(item, handleClear, user, navigate)
+          }
         >
           Eliminar categoria
         </DropdownItem>
