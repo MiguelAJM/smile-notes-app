@@ -40,14 +40,17 @@ export default function TaskProvider({ children }) {
   const [editTask, setEditTask] = useState({})
   const [status, setStatus] = useState('')
 
+  // Si esta vacio es === 0
+  const EMPTY = 0
+
   // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
-  const editingTask = Object.keys(editTask).length > 0
+  const editingTask = Object.keys(editTask).length > EMPTY
 
   // Cargar las tareas creadas en la firestore
   useEffect(() => {
     try {
       if (user !== null) {
-        if (pathUrlUid === user.uid || pathUrlUid.length === 0) {
+        if (pathUrlUid === user.uid || pathUrlUid.length === EMPTY) {
           setStatus('pending')
           const q = query(
             collection(db, 'tasks'),
@@ -65,13 +68,15 @@ export default function TaskProvider({ children }) {
           })
 
           return onSub
+        } else {
+          navigate('/')
         }
       }
     } catch (error) {
       toast.error('Ha ocurrido un error')
       setStatus('rejected')
     }
-  }, [user])
+  }, [user, pathUrlUid])
 
   // Rellenar los inputs en el modo edicion
   useEffect(() => {

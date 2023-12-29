@@ -9,8 +9,7 @@ import TaskModal from '../components/TaskModal'
 import MenuTask from '../components/MenuTask'
 
 export default function Tasks() {
-  const { status } =
-    useTask()
+  const { status } = useTask()
   const { toggleModalTask } = useModal()
 
   if (status === 'pending' || status === 'idle') {
