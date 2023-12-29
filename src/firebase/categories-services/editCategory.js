@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 // Editar categorias
 export default async function handleEditCategory(
   item,
+  user,
   categoryName,
   categoryPath
 ) {
@@ -21,9 +22,11 @@ export default async function handleEditCategory(
 
     tasks.forEach((task) => {
       if (task.data().categoryId === item.categoryId) {
-        batch.update(doc(db, 'tasks', task.id), {
-          categoryId: categoryPath
-        })
+        if (task.data().author_uid === user.uid) {
+          batch.update(doc(db, 'tasks', task.id), {
+            categoryId: categoryPath
+          })
+        }
       }
     })
 

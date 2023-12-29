@@ -42,7 +42,7 @@ export default function CategoryModal() {
     // Si hay una categoria la editamos
     if (editCategory.id !== undefined) {
       navigate(`/task/${categoryPath}/u/${user.uid}`)
-      handleEditCategory(editCategory, categoryName, categoryPath)
+      handleEditCategory(editCategory, user, categoryName, categoryPath)
       handleClear()
       return toggleModalCategory()
     }

@@ -52,7 +52,7 @@ export default function CategoryButton({ item }) {
           key='delete-category'
           className='text-danger'
           onPress={() =>
-            handleDeleteCategory(item, handleClear, user, navigate)
+            handleDeleteCategory(item, user, handleClear, navigate)
           }
         >
           Eliminar categoria
