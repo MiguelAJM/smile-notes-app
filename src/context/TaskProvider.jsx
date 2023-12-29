@@ -36,21 +36,18 @@ export default function TaskProvider({ children }) {
   const [tasks, setTasks] = useState([])
   const [completedTasks, setCompletedTasks] = useState(false)
 
-  const [newTaskName, setNewTaskName] = useState('')
   const [editTask, setEditTask] = useState({})
   const [status, setStatus] = useState('')
 
-  // Si esta vacio es === 0
-  const EMPTY = 0
-
   // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
-  const editingTask = Object.keys(editTask).length > EMPTY
+  const EMPTY_OBJECT = 0
+  const editingTask = Object.keys(editTask).length > EMPTY_OBJECT
 
   // Cargar las tareas creadas en la firestore
   useEffect(() => {
     try {
       if (user !== null) {
-        if (pathUrlUid === user.uid || pathUrlUid.length === EMPTY) {
+        if (pathUrlUid === user.uid || pathUrlUid.length === EMPTY_OBJECT) {
           setStatus('pending')
           const q = query(
             collection(db, 'tasks'),
@@ -98,10 +95,6 @@ export default function TaskProvider({ children }) {
       return setTaskName(e.target.value)
     }
 
-    if (e.target.name === 'editTask') {
-      return setNewTaskName(e.target.value)
-    }
-
     if (e.target.name === 'priority') {
       return setPriorityName(e.target.value)
     }
@@ -123,7 +116,7 @@ export default function TaskProvider({ children }) {
   // Limpiar el estado
   const handleClear = () => {
     setTaskName('')
-    setNewTaskName('')
+    setPriorityName('none')
     setEditTask({})
   }
 
@@ -133,9 +126,9 @@ export default function TaskProvider({ children }) {
         tasks,
         taskName,
         priorityName,
-        newTaskName,
         selectedPriority,
         editTask,
+        editingTask,
         completedTasks,
         status,
         handleChange,

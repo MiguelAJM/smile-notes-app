@@ -23,12 +23,9 @@ export default function TaskModal() {
   const { id: category } = useParams()
 
   const { modal, toggleModalTask } = useModal()
-  const { taskName, handleChange, priorityName, handleClear, editTask } =
+  const { taskName, handleChange, priorityName, handleClear, editTask, editingTask } =
     useTask()
   const { user } = useAuth()
-
-  // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
-  const editingMode = Object.keys(editTask).length > 0
 
   // Enviar el formulario
   const handleSubmitTask = (e) => {
@@ -42,8 +39,8 @@ export default function TaskModal() {
     }
 
     if (editTask.id !== undefined) {
-      handleEditTask(editTask, taskName, priorityName)
       handleClear()
+      handleEditTask(editTask, taskName, priorityName)
       return toggleModalTask()
     }
 
@@ -51,6 +48,7 @@ export default function TaskModal() {
     toggleModalTask()
     return handleAddTask(category, taskName, user, priorityName)
   }
+
   return (
     <Modal
       className='dark text-foreground bg-background z-[1000]'
@@ -62,7 +60,7 @@ export default function TaskModal() {
           <>
             <form onSubmit={handleSubmitTask}>
               <ModalHeader className='flex flex-col gap-1'>
-                <h2>{editingMode ? 'Editar tarea' : 'Nueva tarea'}</h2>
+                <h2>{editingTask ? 'Editar tarea' : 'Nueva tarea'}</h2>
               </ModalHeader>
               <Divider />
               <ModalBody>
@@ -84,7 +82,7 @@ export default function TaskModal() {
                     label='Prioridad'
                     placeholder='Seleccionar'
                     onChange={handleChange}
-                    defaultSelectedKeys={[priorityName]}
+                    defaultSelectedKeys={[editTask.priority]}
                   >
                     {priorities.slice(1, 5).map((items) => (
                       <SelectItem key={items.value} value={items.value}>
@@ -100,7 +98,7 @@ export default function TaskModal() {
                   Cerrar
                 </Button>
                 <Button type='submit' color='success' className='font-bold'>
-                  <h2>{editingMode ? 'Guardar' : 'Crear'}</h2>
+                  <h2>{editingTask ? 'Guardar' : 'Crear'}</h2>
                 </Button>
               </ModalFooter>
             </form>
