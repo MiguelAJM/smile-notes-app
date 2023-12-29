@@ -1,8 +1,8 @@
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { auth } from '../firebase/firebaseConfig'
 import { toast } from 'sonner'
-import { useNavigate } from 'react-router-dom'
 
 const AuthContext = createContext()
 

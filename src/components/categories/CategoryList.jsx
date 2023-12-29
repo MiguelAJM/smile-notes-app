@@ -1,13 +1,13 @@
 import { Listbox, ListboxItem } from '@nextui-org/react'
 import { IconArrowBadgeRightFilled } from '@tabler/icons-react'
-import { useCategory } from '../context/CategoryProvider'
 import { useParams } from 'react-router-dom'
-import { bgHover, bgPrimary } from '../themes'
 import { Grid } from 'react-loader-spinner'
-import { useAuth } from '../context/AuthProvider'
+import { useAuth } from '../../context/AuthProvider'
+import { useCategory } from '../../context/CategoryProvider'
+import { bgHover, bgPrimary } from '../../themes'
 import CategoryButton from '../elements/CategoryButton'
 
-export default function ListCategories() {
+export default function CategoryList() {
   const { id } = useParams()
   const { user } = useAuth()
   const { categories, status } = useCategory()

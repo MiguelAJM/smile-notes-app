@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useAuth } from './AuthProvider'
 import {
   collection,
   onSnapshot,
@@ -7,9 +6,10 @@ import {
   query,
   where
 } from 'firebase/firestore'
-import { db } from '../firebase/firebaseConfig'
 import { toast } from 'sonner'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from './AuthProvider'
+import { db } from '../firebase/firebaseConfig'
 
 const TaskContext = createContext()
 

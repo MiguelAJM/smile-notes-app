@@ -5,8 +5,8 @@ import {
 } from 'firebase/auth'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { auth } from '../firebase/firebaseConfig'
 import { useNavigate } from 'react-router-dom'
+import { auth } from '../../firebase/firebaseConfig'
 
 export default function useRegister() {
   const [user, setUser] = useState({

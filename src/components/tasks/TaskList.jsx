@@ -1,6 +1,3 @@
-import { useParams } from 'react-router-dom'
-import { useTask } from '../context/TaskProvider'
-import { isCompletedTasks } from '../helpers/isCompletedTasks'
 import {
   SwipeableList,
   SwipeableListItem,
@@ -8,11 +5,14 @@ import {
   TrailingActions
 } from 'react-swipeable-list'
 import 'react-swipeable-list/dist/styles.css'
-import TaskCard from '../elements/TaskCard'
+import { useParams } from 'react-router-dom'
 import { IconTrash } from '@tabler/icons-react'
-import { handleDeleteTask } from '../firebase/tasks-services/deleteTask'
+import { useTask } from '../../context/TaskProvider'
+import { isCompletedTasks } from '../../utils/helpers/isCompletedTasks'
+import { handleDeleteTask } from '../../firebase/services/tasks/deleteTask'
+import TaskCard from './TaskCard'
 
-export default function ListCardTasks() {
+export default function TaskList() {
   const EMPTY_TASKS = 0
   const { tasks, completedTasks, selectedPriority, handleClear } = useTask()
 

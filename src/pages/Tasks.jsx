@@ -1,12 +1,12 @@
 import { Button } from '@nextui-org/react'
-import { useTask } from '../context/TaskProvider'
 import { Bars } from 'react-loader-spinner'
 import { IconPlus } from '@tabler/icons-react'
+import { useTask } from '../context/TaskProvider'
 import { useModal } from '../context/ModalProvider'
 import Layout from '../components/Layout'
-import ListTasks from '../components/ListTasks'
-import TaskModal from '../components/TaskModal'
-import MenuTask from '../components/MenuTask'
+import TaskOptions from '../components/tasks/TaskOptions'
+import TaskList from '../components/tasks/TaskList'
+import TaskModal from '../components/modal/TaskModal'
 
 export default function Tasks() {
   const { status } = useTask()
@@ -44,8 +44,8 @@ export default function Tasks() {
     <>
       <Layout>
         <div className='w-full flex flex-col gap-4 h-full overflow-y-auto mt-24 lg:mt-0 mb-20'>
-          <MenuTask />
-          <ListTasks />
+          <TaskOptions />
+          <TaskList />
         </div>
 
         <div className='absolute bottom-0 right-0 left-0 p-2 md:p-8 lg:px-32 lg:py-4'>

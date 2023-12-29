@@ -1,3 +1,4 @@
+import { handleDeleteCategory } from '../../firebase/services/categories/deleteCategory'
 import {
   Button,
   Dropdown,
@@ -6,11 +7,10 @@ import {
   DropdownTrigger
 } from '@nextui-org/react'
 import { IconEdit, IconTrash } from '@tabler/icons-react'
-import { useCategory } from '../context/CategoryProvider'
-import { useModal } from '../context/ModalProvider'
 import { useNavigate } from 'react-router-dom'
-import { handleDeleteCategory } from '../firebase/categories-services/deleteCategory'
-import { useAuth } from '../context/AuthProvider'
+import { useAuth } from '../../context/AuthProvider'
+import { useModal } from '../../context/ModalProvider'
+import { useCategory } from '../../context/CategoryProvider'
 
 export default function CategoryButton({ item }) {
   const { user } = useAuth()

@@ -1,35 +1,37 @@
 import { collection, doc, getDocs, query, writeBatch } from 'firebase/firestore'
-import { db } from '../firebaseConfig'
 import { toast } from 'sonner'
+import { db } from '../../firebaseConfig'
 
-// Eliminar categorias y tareas
-export const handleDeleteCategory = async (
+// Editar categorias
+export default async function handleEditCategory(
   item,
   user,
-  handleClear,
-  navigate
-) => {
+  categoryName,
+  categoryPath
+) {
   try {
     const categoryRef = doc(db, 'categories', item.id)
     const tasksQuery = query(collection(db, 'tasks'))
     const tasks = await getDocs(tasksQuery)
 
     const batch = writeBatch(db)
-
-    batch.delete(categoryRef)
+    batch.update(categoryRef, {
+      categoryTitle: categoryName,
+      categoryId: categoryPath
+    })
 
     tasks.forEach((task) => {
       if (task.data().categoryId === item.categoryId) {
         if (task.data().author_uid === user.uid) {
-          batch.delete(doc(db, 'tasks', task.id))
+          batch.update(doc(db, 'tasks', task.id), {
+            categoryId: categoryPath
+          })
         }
       }
     })
 
     batch.commit()
-    navigate('/')
-    handleClear()
-    toast.success('Categoria eliminada')
+    toast.success('Cambios guardados')
   } catch (error) {
     toast.error('Ha ocurrido un error')
   }

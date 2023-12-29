@@ -1,12 +1,12 @@
 import { Button, Card, CardBody, Checkbox } from '@nextui-org/react'
-import { useTask } from '../context/TaskProvider'
-import { doc, updateDoc } from 'firebase/firestore'
-import { db } from '../firebase/firebaseConfig'
-import { toast } from 'sonner'
-import { priorityTask } from '../helpers/priorityColor'
-import { isTodayOrYesterday } from '../helpers/formattedDate'
 import { IconEdit } from '@tabler/icons-react'
-import { useModal } from '../context/ModalProvider'
+import { doc, updateDoc } from 'firebase/firestore'
+import { toast } from 'sonner'
+import { useTask } from '../../context/TaskProvider'
+import { useModal } from '../../context/ModalProvider'
+import { priorityTask } from '../../utils/helpers/priorityColor'
+import { db } from '../../firebase/firebaseConfig'
+import { isTodayOrYesterday } from '../../utils/helpers/formattedDate'
 
 export default function TaskCard({ item }) {
   const { handleEdit } = useTask()
@@ -54,7 +54,9 @@ export default function TaskCard({ item }) {
               />
             </div>
             <article>
-              <h2 className='text-lh md:text-2xl font-bold line-clamp-1'>{item.title}</h2>
+              <h2 className='text-lh md:text-2xl font-bold line-clamp-1'>
+                {item.title}
+              </h2>
               <p className='text-xs md:text-sm mt-1.5 text-white/50'>
                 {isTodayOrYesterday(item.date_created, options, {
                   time: 'hours'

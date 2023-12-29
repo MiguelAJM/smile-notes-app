@@ -1,6 +1,6 @@
 import { toast } from 'sonner'
-import { db } from '../firebaseConfig'
 import { addDoc, collection } from 'firebase/firestore'
+import { db } from '../../firebaseConfig'
 
 // Crear categoria
 export default async function handleAddCategory(

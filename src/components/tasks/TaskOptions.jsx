@@ -1,10 +1,10 @@
 import { Button, Select, SelectItem } from '@nextui-org/react'
-import { prioritys } from '../mocks/proprotys'
-import { useTask } from '../context/TaskProvider'
 import { IconEye, IconEyeClosed } from '@tabler/icons-react'
-import HeaderTask from './HeaderTask'
+import { useTask } from '../../context/TaskProvider'
+import { prioritys } from '../../utils/mocks/proprotys'
+import TaskHeader from './TaskHeader'
 
-export default function MenuTask() {
+export default function TaskOptions() {
   const {
     completedTasks,
     selectedPriority,
@@ -13,7 +13,7 @@ export default function MenuTask() {
   } = useTask()
   return (
     <div className='grid grid-cols-4 gap-4'>
-      <HeaderTask />
+      <TaskHeader />
       <Button
         onPress={() => toggleCompleted()}
         radius='sm'

@@ -1,7 +1,7 @@
 import { Input } from '@nextui-org/react'
-import { useTask } from '../context/TaskProvider'
-import { handleSaveTask } from '../firebase/tasks-services/editTask'
-import { isTodayOrYesterday } from '../helpers/formattedDate'
+import { useTask } from '../../context/TaskProvider'
+import { handleEditTask } from '../../firebase/services/tasks/editTask'
+import { isTodayOrYesterday } from '../../utils/helpers/formattedDate'
 
 export default function TaskTitle({ item }) {
   const { editTask, newTaskName, priorityName, handleChange, handleClear } =
@@ -22,7 +22,7 @@ export default function TaskTitle({ item }) {
     e.preventDefault()
 
     handleClear()
-    handleSaveTask(item, newTaskName, priorityName, handleClear)
+    handleEditTask(item, newTaskName, priorityName, handleClear)
   }
 
   return (

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import {
   IconBrandGoogleFilled
 } from '@tabler/icons-react'
-import useLogin from '../../hooks/useLogin'
+import useLogin from '../../utils/hooks/useLogin'
 import { bgPrimary, textPrimary } from '../../themes'
 
 export default function LoginPage() {

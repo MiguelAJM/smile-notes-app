@@ -1,6 +1,6 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { toast } from 'sonner'
-import { db } from '../firebaseConfig'
+import { db } from '../../firebaseConfig'
 
 // Editar tarea
 export const handleEditTask = async (item, newTaskName, priorityName) => {

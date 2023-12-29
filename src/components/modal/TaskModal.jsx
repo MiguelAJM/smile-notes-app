@@ -10,14 +10,14 @@ import {
   Select,
   SelectItem
 } from '@nextui-org/react'
-import { useModal } from '../context/ModalProvider'
 import { toast } from 'sonner'
-import { handleAddTask } from '../firebase/tasks-services/createTask'
-import { useTask } from '../context/TaskProvider'
-import { useAuth } from '../context/AuthProvider'
 import { useParams } from 'react-router-dom'
-import { prioritys } from '../mocks/proprotys'
-import { handleEditTask } from '../firebase/tasks-services/editTask'
+import { useModal } from '../../context/ModalProvider'
+import { useTask } from '../../context/TaskProvider'
+import { useAuth } from '../../context/AuthProvider'
+import { handleEditTask } from '../../firebase/services/tasks/editTask'
+import { handleAddTask } from '../../firebase/services/tasks/createTask'
+import { prioritys } from '../../utils/mocks/proprotys'
 
 export default function TaskModal() {
   const { id: category } = useParams()

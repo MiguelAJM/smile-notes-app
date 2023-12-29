@@ -1,9 +1,8 @@
-import { Button, Link } from '@nextui-org/react'
-import { bgPrimary } from '../themes'
-import { useMenu } from '../context/MenuProvider'
-import ListCategories from './ListCategories'
+import { Button, Link, useMenu } from '@nextui-org/react'
+import { bgPrimary } from '../../themes'
+import CategoryList from '../categories/CategoryList'
 
-export default function MobileListCategories() {
+export default function MobileMenu() {
   const { toggleMenu } = useMenu()
   return (
     <aside
@@ -14,7 +13,7 @@ export default function MobileListCategories() {
         onClick={(e) => e.stopPropagation()}
         className='relative max-w-[75%] lg:max-w-[50%] w-full h-full bg-[#181818] px-3 py-4 overflow-y-auto flex flex-col justify-between'
       >
-        <ListCategories />
+        <CategoryList />
         <Button
           fullWidth
           showAnchorIcon

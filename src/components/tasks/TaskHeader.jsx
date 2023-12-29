@@ -1,9 +1,9 @@
 import { Card, CardFooter } from '@nextui-org/react'
-import { useCategory } from '../context/CategoryProvider'
 import { useParams } from 'react-router-dom'
-import { formattedDate } from '../helpers/formattedDate'
+import { useCategory } from '../../context/CategoryProvider'
+import { formattedDate } from '../../utils/helpers/formattedDate'
 
-export default function HeaderTask() {
+export default function TaskHeader() {
   const { id: category } = useParams()
 
   const { categories } = useCategory()

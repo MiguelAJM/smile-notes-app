@@ -6,12 +6,12 @@ import {
   DropdownMenu,
   DropdownTrigger
 } from '@nextui-org/react'
-import { useModal } from '../context/ModalProvider'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthProvider'
 import { IconHome, IconLogout, IconPlus } from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
+import { useModal } from '../context/ModalProvider'
+import { useAuth } from '../context/AuthProvider'
 import { bgPrimary } from '../themes'
-import ListCategories from './ListCategories'
+import CategoryList from './categories/CategoryList'
 
 export default function Aside() {
   const { toggleModalCategory } = useModal()
@@ -32,7 +32,7 @@ export default function Aside() {
           Nueva categoria
         </Button>
 
-        <ListCategories />
+        <CategoryList />
 
         <div className='w-full bg-background absolute bottom-0 left-0'>
           <Dropdown>

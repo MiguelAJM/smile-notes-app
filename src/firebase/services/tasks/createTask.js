@@ -1,6 +1,6 @@
 import { addDoc, collection } from 'firebase/firestore'
-import { db } from '../firebaseConfig'
 import { toast } from 'sonner'
+import { db } from '../../firebaseConfig'
 
 // Crear tarea
 export const handleAddTask = async (

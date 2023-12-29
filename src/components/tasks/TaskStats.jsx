@@ -1,6 +1,6 @@
 import { Card } from '@nextui-org/react'
-import { getTotalTasks } from '../helpers/getTotalTasks'
-import { useTask } from '../context/TaskProvider'
+import { useTask } from '../../context/TaskProvider'
+import { getTotalTasks } from '../../utils/helpers/getTotalTasks'
 
 export default function TasksStats() {
   const { tasks } = useTask()

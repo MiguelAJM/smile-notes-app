@@ -6,10 +6,10 @@ import {
   where
 } from 'firebase/firestore'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { useAuth } from './AuthProvider'
 import { db } from '../firebase/firebaseConfig'
-import { toast } from 'sonner'
-import { useNavigate } from 'react-router-dom'
 
 const CategoryContext = createContext()
 

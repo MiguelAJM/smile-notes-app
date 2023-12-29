@@ -1,10 +1,10 @@
-import { useTask } from '../context/TaskProvider'
 import { Bars } from 'react-loader-spinner'
 import { Button } from '@nextui-org/react'
 import { IconPlus } from '@tabler/icons-react'
+import { useTask } from '../context/TaskProvider'
 import { useModal } from '../context/ModalProvider'
 import Layout from '../components/Layout'
-import TasksStats from '../components/TasksStats'
+import TasksStats from '../components/tasks/TaskStats'
 
 export default function Home() {
   const { status } = useTask()

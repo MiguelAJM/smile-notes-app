@@ -1,8 +1,8 @@
 import { Button, Card, Input } from '@nextui-org/react'
 import { Link } from 'react-router-dom'
 import { IconBrandGoogleFilled } from '@tabler/icons-react'
+import useRegister from '../../utils/hooks/useRegister'
 import { bgSecondary, textSecondary } from '../../themes'
-import useRegister from '../../hooks/useRegister'
 
 export default function RegisterPage() {
   const { user, handleSubmit, handleChange, handleSignGoogle } = useRegister()

@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom'
 import { Toaster } from 'sonner'
-import Home from './pages/Home'
-import RegisterPage from './pages/auth/RegisterPage'
 import LoginPage from './pages/auth/LoginPage'
-import PrivateRoutes from './components/PrivateRoutes'
-import Tasks from './pages/Tasks'
+import RegisterPage from './pages/auth/RegisterPage'
 import NotFound from './pages/NotFound'
-import CategoryModal from './components/CategoryModal'
+import PrivateRoutes from './components/PrivateRoutes'
+import Home from './pages/Home'
+import Tasks from './pages/Tasks'
+import CategoryModal from './components/modal/CategoryModal'
 
 export default function App() {
   return (

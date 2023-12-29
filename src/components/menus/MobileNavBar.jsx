@@ -14,11 +14,11 @@ import {
   IconX
 } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthProvider'
-import { useModal } from '../context/ModalProvider'
-import { useMenu } from '../context/MenuProvider'
+import { useAuth } from '../../context/AuthProvider'
+import { useModal } from '../../context/ModalProvider'
+import { useMenu } from '../../context/MenuProvider'
 
-export default function MobileMenu() {
+export default function MobileNavBar() {
   const { toggleModalCategory } = useModal()
   const { photoURL, handleSignOut } = useAuth()
   const { menu, toggleMenu } = useMenu()

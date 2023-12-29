@@ -8,14 +8,14 @@ import {
   ModalFooter,
   ModalHeader
 } from '@nextui-org/react'
-import { useModal } from '../context/ModalProvider'
-import { useCategory } from '../context/CategoryProvider'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { useAuth } from '../context/AuthProvider'
-import handleAddCategory from '../firebase/categories-services/createCategory'
-import handleEditCategory from '../firebase/categories-services/editCategory'
-import { isCategoryExists } from '../helpers/isCategoryExists'
+import { useNavigate } from 'react-router-dom'
+import { useModal } from '../../context/ModalProvider'
+import { useCategory } from '../../context/CategoryProvider'
+import { useAuth } from '../../context/AuthProvider'
+import { isCategoryExists } from '../../utils/helpers/isCategoryExists'
+import handleEditCategory from '../../firebase/services/categories/editCategory'
+import handleAddCategory from '../../firebase/services/categories/createCategory'
 
 export default function CategoryModal() {
   const navigate = useNavigate()
