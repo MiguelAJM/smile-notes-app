@@ -30,7 +30,7 @@ export default function App() {
             }
           />
           <Route
-            path='/task/:id'
+            path='/task/:id/u/:uid'
             element={
               <PrivateRoutes>
                 <Tasks />

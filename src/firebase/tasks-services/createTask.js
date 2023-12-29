@@ -21,5 +21,6 @@ export const handleAddTask = async (
     toast.success('Tarea agregada')
   } catch (error) {
     toast.error('Ha ocurrido un error')
+    console.log(error.message)
   }
 }

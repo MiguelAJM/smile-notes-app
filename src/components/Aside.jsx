@@ -14,16 +14,16 @@ import { bgPrimary } from '../themes'
 import ListCategories from './ListCategories'
 
 export default function Aside() {
-  const { toggleModal } = useModal()
+  const { toggleModalCategory } = useModal()
   const { displayName, email, photoURL, handleSignOut } = useAuth()
 
   const navigate = useNavigate()
 
   return (
-    <aside className='w-1/6 rounded-lg flex flex-col z-10'>
+    <aside className='hidden lg:min-w-[240px] lg:flex rounded-lg flex-col z-10'>
       <header className='relative h-full flex flex-col gap-5'>
         <Button
-          onPress={() => toggleModal()}
+          onPress={() => toggleModalCategory()}
           size='lg'
           radius='full'
           startContent={<IconPlus />}

@@ -9,7 +9,7 @@ export default function RegisterPage() {
 
   return (
     <section className='flex min-w-screen min-h-screen'>
-      <Card className='max-w-[480px] md:max-w-[540px] mx-auto md:mx-0 w-full flex flex-col gap-8 justify-center items-center p-8 z-[10]'>
+      <Card className='max-w-[480px] lg:max-w-[540px] mx-auto lg:mx-0 w-full flex flex-col gap-8 justify-center items-center p-8 z-[10]'>
         <div className='w-full'>
           <div className='flex flex-col'>
             <strong className='text-3xl uppercase font-light mb-5'>

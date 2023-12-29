@@ -5,9 +5,9 @@ import { toast } from 'sonner'
 // Eliminar tarea
 export const handleDeleteTask = async (item, handleClear) => {
   try {
-    handleClear()
     const taskRef = doc(db, 'tasks', item.id)
     await deleteDoc(taskRef)
+    handleClear()
     toast.success('Tarea eliminada')
   } catch (error) {
     toast.error('Ha ocurrido un error')

@@ -2,12 +2,14 @@ import { Listbox, ListboxItem } from '@nextui-org/react'
 import { IconArrowBadgeRightFilled } from '@tabler/icons-react'
 import { useCategory } from '../context/CategoryProvider'
 import { useParams } from 'react-router-dom'
-import CategoryButton from '../elements/CategoryButton'
 import { bgHover, bgPrimary } from '../themes'
 import { Grid } from 'react-loader-spinner'
+import { useAuth } from '../context/AuthProvider'
+import CategoryButton from '../elements/CategoryButton'
 
 export default function ListCategories() {
   const { id } = useParams()
+  const { user } = useAuth()
   const { categories, status } = useCategory()
 
   if (status === 'pending' || status === 'idle') {
@@ -44,7 +46,7 @@ export default function ListCategories() {
   ) : (
     <Listbox
       aria-label='Categories'
-      className='h-full my-20 flex flex-col gap-3 overflow-y-auto'
+      className='lg:h-full my-16 lg:my-20 flex flex-col gap-3 overflow-y-auto'
     >
       {categories.map((item) => {
         const regex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?\s]+/g
@@ -61,12 +63,12 @@ export default function ListCategories() {
           <ListboxItem
             key={item.id}
             textValue={item.categoryTitle}
-            href={`/task/${path}`}
+            href={`/task/${path}/u/${user.uid}`}
             startContent={<IconArrowBadgeRightFilled />}
             endContent={<CategoryButton item={item} />}
             classNames={baseStyles}
           >
-            <h2 className='text-xl capitalize'>{title}</h2>
+            <h2 className='text-xl capitalize line-clamp-1'>{title}</h2>
           </ListboxItem>
         )
       })}

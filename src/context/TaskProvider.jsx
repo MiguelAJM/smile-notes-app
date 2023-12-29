@@ -9,6 +9,7 @@ import {
 } from 'firebase/firestore'
 import { db } from '../firebase/firebaseConfig'
 import { toast } from 'sonner'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const TaskContext = createContext()
 
@@ -21,6 +22,10 @@ export function useTask() {
 }
 
 export default function TaskProvider({ children }) {
+  const location = useLocation()
+  const pathUrlUid = location.pathname.split('/').slice(4).join('')
+  const navigate = useNavigate()
+
   const { user } = useAuth()
 
   const [taskName, setTaskName] = useState('')
@@ -42,23 +47,25 @@ export default function TaskProvider({ children }) {
   useEffect(() => {
     try {
       if (user !== null) {
-        setStatus('pending')
-        const q = query(
-          collection(db, 'tasks'),
-          where('author_uid', '==', user.uid),
-          orderBy('date_created', 'desc')
-        )
-
-        const onSub = onSnapshot(q, (querySnapshot) => {
-          setTasks(
-            querySnapshot.docs.map((item) => {
-              return { ...item.data(), id: item.id }
-            })
+        if (pathUrlUid === user.uid || pathUrlUid.length === 0) {
+          setStatus('pending')
+          const q = query(
+            collection(db, 'tasks'),
+            where('author_uid', '==', user.uid),
+            orderBy('date_created', 'desc')
           )
-          setStatus('successfull')
-        })
 
-        return onSub
+          const onSub = onSnapshot(q, (querySnapshot) => {
+            setTasks(
+              querySnapshot.docs.map((item) => {
+                return { ...item.data(), id: item.id }
+              })
+            )
+            setStatus('successfull')
+          })
+
+          return onSub
+        }
       }
     } catch (error) {
       toast.error('Ha ocurrido un error')
@@ -70,8 +77,10 @@ export default function TaskProvider({ children }) {
   useEffect(() => {
     if (editingTask) {
       if (user.uid === editTask.author_uid) {
-        setNewTaskName(editTask.title)
+        setTaskName(editTask.title)
         setPriorityName(editTask.priority)
+      } else {
+        navigate('/')
       }
     }
   }, [editTask])
@@ -110,7 +119,6 @@ export default function TaskProvider({ children }) {
   const handleClear = () => {
     setTaskName('')
     setNewTaskName('')
-    setPriorityName('none')
     setEditTask({})
   }
 

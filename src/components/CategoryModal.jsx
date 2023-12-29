@@ -18,7 +18,7 @@ import handleEditCategory from '../firebase/categories-services/editCategory'
 
 export default function CategoryModal() {
   const { user } = useAuth()
-  const { modal, toggleModal } = useModal()
+  const { modal, toggleModalCategory } = useModal()
   const { categoryName, editCategory, handleChange, handleClear } =
     useCategory()
 
@@ -41,23 +41,23 @@ export default function CategoryModal() {
     }
     // Si hay una categoria la editamos
     if (editCategory.id !== undefined) {
-      navigate(`/task/${categoryPath}`)
+      navigate(`/task/${categoryPath}/u/${user.uid}`)
       handleEditCategory(editCategory, categoryName, categoryPath)
       handleClear()
-      return toggleModal()
+      return toggleModalCategory()
     }
 
-    navigate(`/task/${categoryPath}`)
+    navigate(`/task/${categoryPath}/u/${user.uid}`)
     handleAddCategory(categoryName, user, categoryPath)
     handleClear()
-    return toggleModal()
+    return toggleModalCategory()
   }
 
   return (
     <Modal
-      className='dark text-foreground bg-background'
+      className='dark text-foreground bg-background z-[1000]'
       isOpen={modal.category}
-      onOpenChange={toggleModal}
+      onOpenChange={toggleModalCategory}
     >
       <ModalContent>
         {(onClose) => (

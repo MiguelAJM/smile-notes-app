@@ -15,7 +15,6 @@ export default function useLogin() {
   })
 
   const navigate = useNavigate()
-
   function handleChange(e) {
     setUser({ ...user, [e.target.name]: e.target.value })
   }

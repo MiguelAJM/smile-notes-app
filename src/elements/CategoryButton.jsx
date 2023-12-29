@@ -12,14 +12,14 @@ import { useNavigate } from 'react-router-dom'
 import { handleDeleteCategory } from '../firebase/categories-services/deleteCategory'
 
 export default function CategoryButton({ item }) {
-  const { toggleModal } = useModal()
+  const { toggleModalCategory } = useModal()
   const { handleEdit, handleClear } = useCategory()
 
   const navigate = useNavigate()
 
   const handleModal = () => {
     handleEdit(item)
-    toggleModal()
+    toggleModalCategory()
   }
 
   return (

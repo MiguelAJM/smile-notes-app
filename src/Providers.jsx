@@ -4,6 +4,7 @@ import CategoryProvider from './context/CategoryProvider'
 import TaskProvider from './context/TaskProvider'
 import ModalProvider from './context/ModalProvider'
 import { useNavigate } from 'react-router-dom'
+import MenuProvider from './context/MenuProvider'
 
 export default function Providers({ children }) {
   const navigate = useNavigate()
@@ -13,7 +14,9 @@ export default function Providers({ children }) {
       <CategoryProvider>
         <TaskProvider>
           <ModalProvider>
-            <NextUIProvider navigate={navigate}>{children}</NextUIProvider>
+            <MenuProvider>
+              <NextUIProvider navigate={navigate}>{children}</NextUIProvider>
+            </MenuProvider>
           </ModalProvider>
         </TaskProvider>
       </CategoryProvider>

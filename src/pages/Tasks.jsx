@@ -1,36 +1,17 @@
-import { Button, Input, Select, SelectItem } from '@nextui-org/react'
-import { useParams } from 'react-router-dom'
+import { Button } from '@nextui-org/react'
 import { useTask } from '../context/TaskProvider'
-import { toast } from 'sonner'
-import { useAuth } from '../context/AuthProvider'
-import { handleAddTask } from '../firebase/tasks-services/createTask'
-import { prioritys } from '../mocks/proprotys'
 import { Bars } from 'react-loader-spinner'
+import { IconPlus } from '@tabler/icons-react'
+import { useModal } from '../context/ModalProvider'
 import Layout from '../components/Layout'
 import ListTasks from '../components/ListTasks'
-import HeaderTask from '../components/HeaderTask'
+import TaskModal from '../components/TaskModal'
+import MenuTask from '../components/MenuTask'
 
 export default function Tasks() {
-  const { taskName, handleChange, priorityName, handleClear, status } = useTask()
-  const { user } = useAuth()
-
-  // Obtener la categoria por la URL
-  const { id: category } = useParams()
-
-  // Enviar el formulario
-  const handleSubmitTask = (e) => {
-    e.preventDefault()
-    if (taskName === '') {
-      return toast.error('Titulo requerido')
-    }
-
-    if (priorityName === '') {
-      return toast.error('Prioridad requerida')
-    }
-
-    handleClear()
-    handleAddTask(category, taskName, user, priorityName)
-  }
+  const { status } =
+    useTask()
+  const { toggleModalTask } = useModal()
 
   if (status === 'pending' || status === 'idle') {
     return (
@@ -61,44 +42,25 @@ export default function Tasks() {
   }
 
   return (
-    <Layout>
-        <div className='w-full flex flex-col gap-4 h-full overflow-y-auto mb-20'>
-          <HeaderTask />
+    <>
+      <Layout>
+        <div className='w-full flex flex-col gap-4 h-full overflow-y-auto mt-24 lg:mt-0 mb-20'>
+          <MenuTask />
           <ListTasks />
         </div>
 
-      <form
-        className='absolute bottom-0 left-0 right-0 py-4 px-32 flex items-center gap-4'
-        onSubmit={handleSubmitTask}
-      >
-        <Input
-          name='taskName'
-          type='text'
-          size='sm'
-          autoFocus
-          label='Nueva tarea...'
-          value={taskName}
-          onChange={handleChange}
-        />
-        <Select
-          className='w-1/4'
-          size='sm'
-          name='priority'
-          label='Prioridad'
-          placeholder='Seleccionar'
-          onChange={handleChange}
-          defaultSelectedKeys={[priorityName]}
-        >
-          {prioritys.slice(1, 5).map((items) => (
-            <SelectItem key={items.value} value={items.value}>
-              {items.label}
-            </SelectItem>
-          ))}
-        </Select>
-        <Button type='submit' color='default' size='lg'>
-          Crear
-        </Button>
-      </form>
-    </Layout>
+        <div className='absolute bottom-0 right-0 left-0 p-2 md:p-8 lg:px-32 lg:py-4'>
+          <Button
+            fullWidth
+            onPress={() => toggleModalTask()}
+            startContent={<IconPlus />}
+            className='bg-[#181818]'
+          >
+            Nueva tarea
+          </Button>
+        </div>
+      </Layout>
+      <TaskModal />
+    </>
   )
 }

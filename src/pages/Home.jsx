@@ -8,7 +8,7 @@ import TasksStats from '../components/TasksStats'
 
 export default function Home() {
   const { status } = useTask()
-  const { toggleModal } = useModal()
+  const { toggleModalCategory } = useModal()
 
   if (status === 'pending' || status === 'idle') {
     return (
@@ -40,13 +40,17 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className='w-full h-full flex flex-col justify-between text-center mt-5'>
+      <div className='w-full h-full flex flex-col justify-between text-center mt-20 lg:mt-5 p-4 overflow-hidden'>
+      <article className='flex flex-col gap-4 mb-4'>
+        <h1 className='col-span-3 text-3xl md:text-7xl font-medium'>Hola de nuevo</h1>
+        <p className='hidden md:block text-lg text-white/75'>Crea una categoria y empieza a listar</p>
+      </article>
         <TasksStats />
         <Button
-          onPress={() => toggleModal()}
+          onPress={() => toggleModalCategory()}
           size='lg'
           startContent={<IconPlus />}
-          className='bg-[#181818]'
+          className='bg-[#181818] mt-3'
         >
           Crear categoria
         </Button>

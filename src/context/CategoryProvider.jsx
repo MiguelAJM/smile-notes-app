@@ -9,6 +9,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from './AuthProvider'
 import { db } from '../firebase/firebaseConfig'
 import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
 const CategoryContext = createContext()
 
@@ -21,6 +22,8 @@ export function useCategory() {
 }
 
 export default function CategoryProvider({ children }) {
+  const navigate = useNavigate()
+
   const { user } = useAuth()
 
   const [categoryName, setCategoryName] = useState('')
@@ -35,8 +38,8 @@ export default function CategoryProvider({ children }) {
   // Cargar las categorias creadas en la firestore
   useEffect(() => {
     try {
-      setStatus('pending')
       if (user !== null) {
+        setStatus('pending')
         const q = query(
           collection(db, 'categories'),
           where('author_uid', '==', user.uid),
@@ -65,6 +68,8 @@ export default function CategoryProvider({ children }) {
     if (editingCategory) {
       if (user.uid === editCategory.author_uid) {
         setCategoryName(editCategory.categoryTitle)
+      } else {
+        navigate('/')
       }
     }
   }, [editCategory])
