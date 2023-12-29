@@ -13,7 +13,7 @@ export default function TaskCard({ item }) {
   const { toggleModalTask } = useModal()
 
   // Mostrar la prioridad segun el color
-  const priorityColor = priorityTask(item.priority)
+  const priority = priorityTask(item.priority)
 
   // Opciones para formatear la fecha
   const options = {
@@ -54,9 +54,15 @@ export default function TaskCard({ item }) {
               />
             </div>
             <article>
-              <h2 className='text-lh md:text-2xl font-bold line-clamp-1'>
+              <h2 className='text-lg md:text-2xl font-bold line-clamp-1'>
                 {item.title}
               </h2>
+              <p className='font-bold mt-1.5'>
+                Prorioridad:{' '}
+                <span className={`${priority.text_color}`}>
+                  {priority.name}
+                </span>
+              </p>
               <p className='text-xs md:text-sm mt-1.5 text-white/50'>
                 {isTodayOrYesterday(item.date_created, options, {
                   time: 'hours'
@@ -74,7 +80,9 @@ export default function TaskCard({ item }) {
           </Button>
         </div>
       </CardBody>
-      <div className={`${priorityColor} absolute left-0 top-0 bottom-0 w-2`} />
+      <div
+        className={`${priority.chip_color} absolute left-0 top-0 bottom-0 w-2`}
+      />
     </Card>
   )
 }

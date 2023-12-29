@@ -31,7 +31,7 @@ export default function TaskList() {
   const trailingActions = (item) => (
     <TrailingActions className='grid place-content-center'>
       <SwipeAction
-        className='bg-red-500 h-full p-2.5 text-black'
+        className='bg-red-500 h-full p-8 text-black'
         destructive={true}
         onClick={() => handleDeleteTask(item, handleClear)}
       >
