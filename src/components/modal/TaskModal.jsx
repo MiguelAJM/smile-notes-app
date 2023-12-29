@@ -61,6 +61,7 @@ export default function TaskModal() {
       isOpen={modal.task}
       onOpenChange={toggleModalTask}
       placement='top'
+      backdrop='blur'
     >
       <ModalContent>
         {(onClose) => (

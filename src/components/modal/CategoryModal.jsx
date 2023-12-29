@@ -69,6 +69,7 @@ export default function CategoryModal() {
       isOpen={modal.category}
       onOpenChange={toggleModalCategory}
       placement='top'
+      backdrop='blur'
     >
       <ModalContent>
         {(onClose) => (
