@@ -68,6 +68,7 @@ export default function CategoryModal() {
       className='dark text-foreground bg-background z-[1000]'
       isOpen={modal.category}
       onOpenChange={toggleModalCategory}
+      placement='top'
     >
       <ModalContent>
         {(onClose) => (

@@ -60,6 +60,7 @@ export default function TaskModal() {
       className='dark text-foreground bg-background z-[1000]'
       isOpen={modal.task}
       onOpenChange={toggleModalTask}
+      placement='top'
     >
       <ModalContent>
         {(onClose) => (
