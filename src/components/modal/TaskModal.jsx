@@ -17,7 +17,7 @@ import { useTask } from '../../context/TaskProvider'
 import { useAuth } from '../../context/AuthProvider'
 import { handleEditTask } from '../../firebase/services/tasks/editTask'
 import { handleAddTask } from '../../firebase/services/tasks/createTask'
-import { priorities } from '../../utils/mocks/proprotys'
+import { priorities } from '../../utils/mocks/priorities'
 
 export default function TaskModal() {
   const { id: category } = useParams()

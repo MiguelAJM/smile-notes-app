@@ -1,7 +1,7 @@
 import { Button, Select, SelectItem } from '@nextui-org/react'
 import { IconEye, IconEyeClosed } from '@tabler/icons-react'
 import { useTask } from '../../context/TaskProvider'
-import { priorities } from '../../utils/mocks/proprotys'
+import { priorities } from '../../utils/mocks/priorities'
 import TaskHeader from './TaskHeader'
 
 export default function TaskOptions() {
