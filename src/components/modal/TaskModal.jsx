@@ -17,7 +17,7 @@ import { useTask } from '../../context/TaskProvider'
 import { useAuth } from '../../context/AuthProvider'
 import { handleEditTask } from '../../firebase/services/tasks/editTask'
 import { handleAddTask } from '../../firebase/services/tasks/createTask'
-import { prioritys } from '../../utils/mocks/proprotys'
+import { priorities } from '../../utils/mocks/proprotys'
 
 export default function TaskModal() {
   const { id: category } = useParams()
@@ -86,7 +86,7 @@ export default function TaskModal() {
                     onChange={handleChange}
                     defaultSelectedKeys={[priorityName]}
                   >
-                    {prioritys.slice(1, 5).map((items) => (
+                    {priorities.slice(1, 5).map((items) => (
                       <SelectItem key={items.value} value={items.value}>
                         {items.label}
                       </SelectItem>

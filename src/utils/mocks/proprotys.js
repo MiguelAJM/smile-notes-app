@@ -1,4 +1,4 @@
-export const prioritys = [
+export const priorities = [
   { label: 'Todos', value: 'all' },
   { label: 'Ninguno', value: 'none' },
   { label: 'Baja', value: 'low' },

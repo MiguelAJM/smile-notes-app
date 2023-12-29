@@ -1,7 +1,7 @@
 import { Button, Select, SelectItem } from '@nextui-org/react'
 import { IconEye, IconEyeClosed } from '@tabler/icons-react'
 import { useTask } from '../../context/TaskProvider'
-import { prioritys } from '../../utils/mocks/proprotys'
+import { priorities } from '../../utils/mocks/proprotys'
 import TaskHeader from './TaskHeader'
 
 export default function TaskOptions() {
@@ -35,7 +35,7 @@ export default function TaskOptions() {
           trigger: 'bg-[#181818]'
         }}
       >
-        {prioritys.map((items) => (
+        {priorities.map((items) => (
           <SelectItem
             textValue={items.label}
             key={items.value}
