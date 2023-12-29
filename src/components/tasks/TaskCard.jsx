@@ -58,7 +58,7 @@ export default function TaskCard({ item }) {
                 {item.title}
               </h2>
               <p className='font-bold mt-1.5'>
-                Prorioridad:{' '}
+                Prioridad:{' '}
                 <span className={`${priority.text_color}`}>
                   {priority.name}
                 </span>
