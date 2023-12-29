@@ -8,7 +8,7 @@ export default function MobileListCategories() {
   return (
     <aside
       onClick={() => toggleMenu()}
-      className='absolute top-0 left-0 bottom-0 bg-black/75 w-full h-full flex items-center z-50 overflow-hidden'
+      className='absolute top-0 left-0 bottom-0 bg-black/75 w-full h-screen flex items-center z-50 overflow-hidden'
     >
       <div
         onClick={(e) => e.stopPropagation()}
