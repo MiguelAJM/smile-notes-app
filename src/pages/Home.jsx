@@ -31,7 +31,7 @@ export default function Home() {
       <Layout>
         <div className='w-full flex flex-col items-start'>
           <h2 className='text-xl font-medium text-center'>
-            No se ha podido obtener la categoria.
+            Ha ocurrido un error inesperado, vuelve en otro momento.
           </h2>
         </div>
       </Layout>
@@ -40,20 +40,21 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className='w-full h-full flex flex-col justify-between text-center mt-20 lg:mt-5 p-4 overflow-hidden'>
-      <article className='flex flex-col gap-4 mb-4'>
-        <h1 className='col-span-3 text-3xl md:text-7xl font-medium'>Hola de nuevo</h1>
-        <p className='hidden md:block text-lg text-white/75'>Crea una categoria y empieza a listar</p>
-      </article>
-        <TasksStats />
+      <div className='w-full h-full flex flex-col gap-2 text-center mt-20 lg:mt-5 p-4 overflow-hidden'>
+        <article className='flex flex-col gap-4 my-4'>
+          <h1 className='text-3xl md:text-7xl lg:mb-8 font-medium'>
+            ¡Hola de nuevo!
+          </h1>
+        </article>
         <Button
           onPress={() => toggleModalCategory()}
           size='lg'
           startContent={<IconPlus />}
-          className='bg-[#181818] mt-3'
+          className='bg-[#181818] mb-4 min-h-16 text-xl'
         >
           Crear categoria
         </Button>
+        <TasksStats />
       </div>
     </Layout>
   )

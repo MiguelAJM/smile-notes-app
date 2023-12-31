@@ -15,7 +15,7 @@ export default function Layout({ children }) {
             <MobileNavBar />
             <Aside />
             <div
-              className={`${bgColor} w-full lg:w-5/6 relative flex flex-col lg:rounded-2xl gap-4 px-2 md:px-8 lg:px-24 lg:py-4 overflow-hidden`}
+              className={`${bgColor} w-full lg:w-5/6 relative flex flex-col lg:rounded-2xl gap-4 px-2 md:px-8 lg:px-16 lg:py-4  overflow-hidden`}
             >
               {children}
             </div>
