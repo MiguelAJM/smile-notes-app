@@ -48,7 +48,7 @@ export default function Tasks() {
           <TaskList />
         </div>
 
-        <div className='absolute bottom-0 right-0 left-0 p-2 md:p-8 lg:px-32 lg:py-4'>
+        <div className='absolute bottom-0 right-0 left-0 p-2 md:p-8 lg:px-16 lg:py-4'>
           <Button
             fullWidth
             onPress={() => toggleModalTask()}
