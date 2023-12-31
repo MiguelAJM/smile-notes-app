@@ -1,14 +1,16 @@
 import { Bars } from 'react-loader-spinner'
 import { Button } from '@nextui-org/react'
 import { IconPlus } from '@tabler/icons-react'
-import { useTask } from '../context/TaskProvider'
+import { useCategory } from '../context/CategoryProvider'
 import { useModal } from '../context/ModalProvider'
 import Layout from '../components/Layout'
 import TasksStats from '../components/tasks/TaskStats'
 
 export default function Home() {
-  const { status } = useTask()
+  const { status, categories } = useCategory()
   const { toggleModalCategory } = useModal()
+
+  const CATEGORIES_EMPTY = 0
 
   if (status === 'pending' || status === 'idle') {
     return (
@@ -41,10 +43,13 @@ export default function Home() {
   return (
     <Layout>
       <div className='w-full h-full flex flex-col gap-2 text-center mt-20 lg:mt-5 p-4 overflow-hidden'>
-        <article className='flex flex-col gap-4 my-4'>
-          <h1 className='text-3xl md:text-7xl lg:mb-8 font-medium'>
-            ¡Hola de nuevo!
-          </h1>
+        <article className='flex flex-col gap-4 my-4 lg:mb-8'>
+          <h1 className='text-3xl md:text-7xl font-medium'>¡Hola de nuevo!</h1>
+          {categories.length === CATEGORIES_EMPTY && (
+            <p className='text-white/75 text-sm md:text-xl'>
+              Empieza a listar tus tareas creando una categoria
+            </p>
+          )}
         </article>
         <Button
           onPress={() => toggleModalCategory()}
