@@ -33,8 +33,8 @@ export default function CategoryProvider({ children }) {
   const [status, setStatus] = useState('idle')
 
   // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
-  const EMPTY_OBJECT = 0
-  const editingCategory = Object.keys(editCategory).length > EMPTY_OBJECT
+  const EMPTY = 0
+  const editingCategory = Object.keys(editCategory).length > EMPTY
 
   // Cargar las categorias creadas en la firestore
   useEffect(() => {

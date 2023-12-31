@@ -40,14 +40,14 @@ export default function TaskProvider({ children }) {
   const [status, setStatus] = useState('')
 
   // Si hay algo en el estado de editCategory significa el el modo edicion esta activo
-  const EMPTY_OBJECT = 0
-  const editingTask = Object.keys(editTask).length > EMPTY_OBJECT
+  const EMPTY = 0
+  const editingTask = Object.keys(editTask).length > EMPTY
 
   // Cargar las tareas creadas en la firestore
   useEffect(() => {
     try {
       if (user !== null) {
-        if (pathUrlUid === user.uid || pathUrlUid.length === EMPTY_OBJECT) {
+        if (pathUrlUid === user.uid || pathUrlUid.length === EMPTY) {
           setStatus('pending')
           const q = query(
             collection(db, 'tasks'),
