@@ -3,10 +3,5 @@ import { useAuth } from '../context/AuthProvider'
 
 export default function PrivateRoutes({ children }) {
   const { user } = useAuth()
-
-  if (user !== null) {
-    return children
-  }
-
-  return <Navigate replace to='/login' />
+  return user !== undefined ? children : <Navigate replace to='/login' />
 }
