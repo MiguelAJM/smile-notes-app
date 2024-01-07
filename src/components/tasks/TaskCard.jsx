@@ -1,17 +1,12 @@
-import { Button, Card, CardBody, Checkbox } from '@nextui-org/react'
-import { IconEdit } from '@tabler/icons-react'
-import { doc, updateDoc } from 'firebase/firestore'
-import { toast } from 'sonner'
-import { useTask } from '../../context/TaskProvider'
-import { useModal } from '../../context/ModalProvider'
-import { priorityTask } from '../../utils/helpers/priorityColor'
 import { db } from '../../firebase/firebaseConfig'
+import { doc, updateDoc } from 'firebase/firestore'
+import { priorityTask } from '../../utils/helpers/priorityColor'
+import { Card, CardBody, Checkbox } from '@nextui-org/react'
 import { isTodayOrYesterday } from '../../utils/helpers/formattedDate'
+import { toast } from 'sonner'
+import TaskButtons from './TaskButtons'
 
 export default function TaskCard({ item }) {
-  const { handleEdit } = useTask()
-  const { toggleModalTask } = useModal()
-
   // Mostrar la prioridad segun el color
   const priority = priorityTask(item.priority)
 
@@ -20,11 +15,6 @@ export default function TaskCard({ item }) {
     hour: 'numeric',
     minute: 'numeric',
     hour12: true
-  }
-
-  const handleEditTask = (item) => {
-    toggleModalTask()
-    handleEdit(item)
   }
 
   // Establecer tarea completada
@@ -41,7 +31,7 @@ export default function TaskCard({ item }) {
 
   return (
     <Card className='w-full relative p-2 col-span-4 group/task select-none rounded-none'>
-      <CardBody>
+      <CardBody className='px-2'>
         <div className='flex gap-5 items-center justify-between'>
           <article className='w-full flex items-center gap-2'>
             <div className='ml-1'>
@@ -70,14 +60,7 @@ export default function TaskCard({ item }) {
               </p>
             </article>
           </article>
-          <Button
-            onPress={() => handleEditTask(item)}
-            isIconOnly
-            radius='full'
-            color='success'
-          >
-            <IconEdit />
-          </Button>
+          <TaskButtons item={item} />
         </div>
       </CardBody>
       <div
